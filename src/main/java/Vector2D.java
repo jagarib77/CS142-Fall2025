@@ -4,9 +4,10 @@ Preston Campbell
 */
 
 public class Vector2D {
-    double x;
-    double y;
+    double x = 0;
+    double y = 0;
     
+    // Constructor that assigns x and y
     public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
@@ -20,6 +21,7 @@ public class Vector2D {
         return y;
     }
     
+    // Make the vector have a magnitude of 1
     public Vector2D normalize() {
         double _magnitude = magnitude();
         x /= _magnitude;
@@ -27,6 +29,7 @@ public class Vector2D {
         return this;
     }
     
+    // Returns a vector with a magnitude of 1 without changing the variables in the class
     public Vector2D normalized() {
         double _magnitude = magnitude();
         return new Vector2D(x / _magnitude, y / _magnitude);
