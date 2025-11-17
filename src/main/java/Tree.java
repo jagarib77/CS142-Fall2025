@@ -1,3 +1,8 @@
+/*
+Obstacle that sits still on the ground
+Preston
+*/
+
 public class Tree extends Obstacle {
     int length;
     

@@ -1,3 +1,8 @@
+/*
+Obstacle that moves in a straight line
+Preston
+*/
+
 public class Car extends Obstacle {
     double speed;
     

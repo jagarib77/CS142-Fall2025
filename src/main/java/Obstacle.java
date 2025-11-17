@@ -1,12 +1,11 @@
 /*
 Base class for all obstacles
+Preston
 */
 
-public abstract class Obstacle {
-    Vector2DInt position;
-    
+public abstract class Obstacle extends SimulationObject {
     public Obstacle(Vector2DInt position) {
-        this.position = position;
+        super(position);
     }
     
     // called when a boid bumps into this obstacle
