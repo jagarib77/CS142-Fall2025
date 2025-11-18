@@ -4,7 +4,7 @@ Preston
 */
 
 public class Window extends Obstacle {
-    public Window(Vector2DInt position) {
+    public Window(Vector2D position) {
         super(position);
     }
 }

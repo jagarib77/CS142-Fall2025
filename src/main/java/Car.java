@@ -6,7 +6,7 @@ Preston
 public class Car extends Obstacle {
     double speed;
     
-    public Car(Vector2DInt position, double speed) {
+    public Car(Vector2D position, double speed) {
         super(position);
         this.speed = speed;
     }

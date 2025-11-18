@@ -4,7 +4,7 @@ Preston
 */
 
 public abstract class Obstacle extends SimulationObject {
-    public Obstacle(Vector2DInt position) {
+    public Obstacle(Vector2D position) {
         super(position);
     }
     

@@ -4,13 +4,13 @@ Apollo/Preston
 */
 
 class SimulationObject {
-    Vector2DInt position;
+    Vector2D position;
     
-    public SimulationObject(Vector2DInt position) {
+    public SimulationObject(Vector2D position) {
         this.position = position;
     }
     
-    public Vector2DInt getPosition() {
+    public Vector2D getPosition() {
         return position;
     }
     
