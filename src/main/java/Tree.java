@@ -4,9 +4,9 @@ Preston
 */
 
 public class Tree extends Obstacle {
-    int length;
     
-    public Tree(Vector2D position, double speed) {
-        super(position);
+    public Tree(Vector2D rootPosition, double width, double height) {
+        super(new Vector2D(rootPosition.x, rootPosition.y + height / 2),
+              new Vector2D(width, height));
     }
 }

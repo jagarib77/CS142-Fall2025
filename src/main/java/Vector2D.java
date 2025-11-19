@@ -25,6 +25,14 @@ public class Vector2D {
         return y;
     }
     
+    public void setX(double x) {
+        this.x = x; 
+    }
+    
+    public void setY(double y) {
+        this.y = y; 
+    }
+    
     // Make the vector have a magnitude of 1
     public Vector2D normalize() {
         double _magnitude = magnitude();
