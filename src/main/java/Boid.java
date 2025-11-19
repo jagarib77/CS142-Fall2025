@@ -1,12 +1,4 @@
 class Boid extends SimulationObject{
-    private double maxSpeed = 5.0;
-    private double minSpeed = 1.0;
-    private double visibleRange = 30.0;
-    private double protectedRange = 10.0;
-    private double separationFactor = 0.05;
-    private double alignmentFactor = 1.0;
-    private double cohesionFactor = 0.05;
-
     private Vector2D position;
     private Vector2D velocity;
 
@@ -20,22 +12,41 @@ class Boid extends SimulationObject{
         Vector2D cohesionSum = new Vector2D();
         int visibleNeighbors = 0;
         for(Boid boid : boids){
-            if(this.position.distanceTo(boid.getPosition()) < protectedRange){
+            if(this.position.distanceTo(boid.getPosition()) < this.getProtectedRange()){
                 separationDelta = separationDelta.plus(this.position.minus(boid.getPosition()));
             }
-            if(this.position.distanceTo(boid.getPosition()) < visibleRange){
+            if(this.position.distanceTo(boid.getPosition()) < this.getVisibleRange()){
                 alignmentSum = alignmentSum.plus(boid.getVelocity());
                 cohesionSum = cohesionSum.plus((boid.getPosition().minus(this.position)).times(boid.getAttractionFactor()));
                 visibleNeighbors++;
             }
         }
-        velocity = velocity.plus(separationDelta).times(separationFactor);
-        velocity = alignmentSum.times((double)1 / visibleNeighbors).minus(velocity).times(alignmentFactor);
+        velocity = velocity.plus(separationDelta).times(this.getSeparationFactor());
+        velocity = alignmentSum.times((double)1 / visibleNeighbors).minus(velocity).times(this.getAlignmentFactor());
         velocity = cohesionSum.times((double)1 / visibleNeighbors);
     }
 
+    public double getVisibleRange(){
+        return 30.0;
+    }
+    public double getProtectedRange(){
+        return 10.0;
+    }
+    public double getSeparationFactor(){
+        return 0.05;
+    }
+    public double getAlignmentFactor(){
+        return 1.0;
+    }
     public double getAttractionFactor(){
-        return this.cohesionFactor;
+        return 0.05;
+    }
+
+    public double getMinimumSpeed(){
+        return 1.0;
+    }
+    public double getMaximumSpeed(){
+        return 5.0;
     }
 
     @Override
