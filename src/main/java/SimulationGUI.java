@@ -1,0 +1,95 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+
+public class SimulationGUI extends JFrame {
+    private Simulation simulation;
+    private GridPanel gridPanel;
+    private JButton startButton;
+    private JButton pauseButton;
+    private JButton addBoidButton;
+    private JButton addSuperBoidButton;
+    private JButton addSadBoidButton;
+    private JButton addCarButton;
+    private JButton addTreeButton;
+    private JButton addWindowButton;
+
+    public SimulationGUI(Simulation sim) {
+        this.simulation = sim;
+        setTitle("Boid Bunch Simulation");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        gridPanel = new GridPanel(simulation);
+        add(gridPanel, BorderLayout.CENTER);
+
+        JPanel controls = new JPanel();
+        controls.setLayout(new GridLayout(2, 4));
+
+        startButton = new JButton("Start");
+        pauseButton = new JButton("Pause");
+        addBoidButton = new JButton("Add Boid");
+        addSuperBoidButton = new JButton("Add SuperBoid");
+        addSadBoidButton = new JButton("Add SadBoid");
+        addCarButton = new JButton("Add Car");
+        addTreeButton = new JButton("Add Tree");
+        addWindowButton = new JButton("Add Window");
+
+        controls.add(startButton);
+        controls.add(pauseButton);
+        controls.add(addBoidButton);
+        controls.add(addSuperBoidButton);
+        controls.add(addSadBoidButton);
+        controls.add(addCarButton);
+        controls.add(addTreeButton);
+        controls.add(addWindowButton);
+
+        add(controls, BorderLayout.SOUTH);
+
+        startButton.addActionListener(e -> simulation.start());
+        pauseButton.addActionListener(e -> simulation.pause());
+
+        addBoidButton.addActionListener(e -> simulation.addRandomBoid());
+        addSuperBoidButton.addActionListener(e -> simulation.addRandomSuperBoid());
+        addSadBoidButton.addActionListener(e -> simulation.addRandomSadBoid());
+        addCarButton.addActionListener(e -> simulation.addRandomCar());
+        addTreeButton.addActionListener(e -> simulation.addRandomTree());
+        addWindowButton.addActionListener(e -> simulation.addRandomWindow());
+
+        Timer timer = new Timer(16, evt -> {
+            simulation.update();
+            gridPanel.repaint();
+        });
+        timer.start();
+
+        setSize(800, 800);
+        setVisible(true);
+    }
+
+    private static class GridPanel extends JPanel {
+        private Simulation simulation;
+
+        public GridPanel(Simulation sim) {
+            this.simulation = sim;
+            setBackground(Color.WHITE);
+        }
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+
+            int gridSize = 20;
+            g2.setColor(Color.LIGHT_GRAY);
+            for (int x = 0; x < getWidth(); x += gridSize) {
+                g2.drawLine(x, 0, x, getHeight());
+            }
+            for (int y = 0; y < getHeight(); y += gridSize) {
+                g2.drawLine(0, y, getWidth(), y);
+            }
+
+            for (SimulationObject obj : simulation.getObjects()) {
+                obj.draw(g2);
+            }
+        }
+    }
+}
