@@ -12,7 +12,11 @@ public class Vector2D {
         this.x = x;
         this.y = y;
     }
-    
+
+    public Vector2D() {
+
+    }
+
     public double getX() {
         return x;
     }
@@ -55,5 +59,21 @@ public class Vector2D {
         y = _y;
         
         return this;
+    }
+
+    public double distanceTo(Vector2D vector) {
+        return Math.sqrt(Math.pow(x - vector.getX(), 2) + Math.pow(y - vector.getY(), 2));
+    }
+
+    public Vector2D plus(Vector2D vector) {
+        return new Vector2D(x + vector.getX(), y + vector.getY());
+    }
+
+    public Vector2D minus(Vector2D vector) {
+        return new Vector2D(x - vector.getX(), y - vector.getY());
+    }
+
+    public Vector2D times(double t) {
+        return new Vector2D(x * t, y * t);
     }
 }

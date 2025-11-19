@@ -15,5 +15,6 @@ class SimulationObject {
     }
     
     public void update() {
+
     }
 }
