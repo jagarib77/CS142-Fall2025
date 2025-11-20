@@ -62,7 +62,7 @@ public class SimulationGUI extends JFrame {
         addWindowButton.addActionListener(e -> simulation.addRandomWindow());
 
         Timer timer = new Timer(16, evt -> {
-            simulation.update();
+            simulation.step();
             gridPanel.repaint();
         });
         timer.start();

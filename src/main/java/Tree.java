@@ -5,8 +5,7 @@ Preston
 
 public class Tree extends Obstacle {
     
-    public Tree(Vector2D rootPosition, double width, double height) {
-        super(new Vector2D(rootPosition.x, rootPosition.y + height / 2),
-              new Vector2D(width, height));
+    public Tree(Vector2D rootPosition, Vector2D size) {
+        super(new Vector2D(rootPosition.x, rootPosition.y + size.y / 2), size);
     }
 }

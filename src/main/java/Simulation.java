@@ -1,3 +1,7 @@
+/*
+Munna
+*/
+
 import java.util.ArrayList;
 
 public class Simulation {
@@ -20,20 +24,17 @@ public class Simulation {
      */
     private void initializeGrid() {
         // Sample objects - make sure these classes exist in your project
-        Boid b = new Boid(1, 1);
-        Tree t = new Tree(2, 3);
-        Car c = new Car(0, 4);
-        Obstacle o = new Obstacle(3, 2);
+        Boid b = new Boid(new Vector2D(1, 1));
+        Tree t = new Tree(new Vector2D(1, 1), new Vector2D(1 , 1));
+        Car c = new Car(new Vector2D(3, 2), new Vector2D(1,1), 2);
 
         addObject(b);
         addObject(t);
         addObject(c);
-        addObject(o);
 
         grid[1][1] = b;
         grid[2][3] = t;
         grid[0][4] = c;
-        grid[3][2] = o;
     }
 
     /**
@@ -42,29 +43,46 @@ public class Simulation {
     public void addObject(SimulationObject obj) {
         objects.add(obj);
     }
-
-    /**
-     * Prints the initial contents of the grid.
-     */
-    public void printGrid() {
-        System.out.println("Initial Simulation Grid:\n");
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                if (grid[r][c] == null) {
-                    System.out.print(". ");
-                } else {
-                    System.out.print(grid[r][c].getSymbol() + " ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     /**
      * Placeholder simulation step for milestone.
      */
     public void step() {
         System.out.println("Simulation step executed (placeholder).");
+    }
+
+    void start() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void pause() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void addRandomBoid() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void addRandomSuperBoid() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void addRandomSadBoid() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void addRandomCar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void addRandomTree() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void addRandomWindow() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    Iterable<SimulationObject> getObjects() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

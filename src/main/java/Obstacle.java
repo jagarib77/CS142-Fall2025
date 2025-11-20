@@ -1,3 +1,6 @@
+
+import java.awt.Graphics2D;
+
 /*
 Base class for all obstacles
 Preston
@@ -13,6 +16,11 @@ public abstract class Obstacle extends SimulationObject {
     
     // called when a boid bumps into this obstacle
     public void bump(Boid boid) {
+    }
+    
+    public void draw(Graphics2D g2) {
+        g2.setColor(color);
+        g2.fillRect((int)position.x, (int)position.y, (int)size.x, (int)size.y);
     }
     
     public boolean isOverlapped(Vector2D point) {
