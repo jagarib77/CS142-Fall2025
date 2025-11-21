@@ -59,23 +59,23 @@ public class Simulation {
     }
 
     void addRandomSuperBoid() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        objects.add(new SuperBoid(new Vector2D(1, 1)));
     }
 
     void addRandomSadBoid() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        objects.add(new SadBoid(new Vector2D(1, 1)));
     }
 
     void addRandomCar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        objects.add(new Car(new Vector2D(1, 1), new Vector2D(3, 5), 1));
     }
 
     void addRandomTree() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        objects.add(new Tree(new Vector2D(1, 1), new Vector2D(2, 2)));
     }
 
     void addRandomWindow() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        objects.add(new Window(new Vector2D(1, 1), new Vector2D(2, 2)));
     }
 
     Iterable<SimulationObject> getObjects() {
