@@ -46,6 +46,10 @@ public class Simulation {
         }
     }
 
+    public Vector2D getRandomPoint(){
+        return new Vector2D(Math.random()*rows, Math.random()*cols);
+    }
+
     void start() {
         isActive = true;
     }
@@ -55,27 +59,27 @@ public class Simulation {
     }
 
     void addRandomBoid() {
-        objects.add(new Boid(new Vector2D(1, 1)));
+        objects.add(new Boid(getRandomPoint()));
     }
 
     void addRandomSuperBoid() {
-        objects.add(new SuperBoid(new Vector2D(1, 1)));
+        objects.add(new SuperBoid(getRandomPoint()));
     }
 
     void addRandomSadBoid() {
-        objects.add(new SadBoid(new Vector2D(1, 1)));
+        objects.add(new SadBoid(getRandomPoint()));
     }
 
     void addRandomCar() {
-        objects.add(new Car(new Vector2D(1, 1), new Vector2D(3, 5), 1));
+        objects.add(new Car(getRandomPoint(), new Vector2D(3, 5), 1));
     }
 
     void addRandomTree() {
-        objects.add(new Tree(new Vector2D(1, 1), new Vector2D(2, 2)));
+        objects.add(new Tree(getRandomPoint(), new Vector2D(2, 2)));
     }
 
     void addRandomWindow() {
-        objects.add(new Window(new Vector2D(1, 1), new Vector2D(2, 2)));
+        objects.add(new Window(getRandomPoint(), new Vector2D(2, 2)));
     }
 
     Iterable<SimulationObject> getObjects() {
