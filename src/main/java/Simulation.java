@@ -10,6 +10,7 @@ public class Simulation {
     private int cols;
     private SimulationObject[][] grid;
     private ArrayList<SimulationObject> objects;
+    private boolean isActive = true;
 
     public Simulation(int rows, int cols) {
         this.rows = rows;
@@ -19,11 +20,7 @@ public class Simulation {
         initializeGrid();
     }
 
-    /**
-     * Example setup for milestone: adding basic objects.
-     */
     private void initializeGrid() {
-        // Sample objects - make sure these classes exist in your project
         Boid b = new Boid(new Vector2D(1, 1));
         Tree t = new Tree(new Vector2D(1, 1), new Vector2D(1 , 1));
         Car c = new Car(new Vector2D(3, 2), new Vector2D(1,1), 2);
@@ -37,29 +34,28 @@ public class Simulation {
         grid[0][4] = c;
     }
 
-    /**
-     * Adds an object to the simulation list.
-     */
     public void addObject(SimulationObject obj) {
         objects.add(obj);
     }
-    /**
-     * Placeholder simulation step for milestone.
-     */
+
     public void step() {
-        System.out.println("Simulation step executed (placeholder).");
+        if(isActive) {
+            for(SimulationObject obj : objects) {
+                obj.update();
+            }
+        }
     }
 
     void start() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        isActive = true;
     }
 
     void pause() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        isActive = false;
     }
 
     void addRandomBoid() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        objects.add(new Boid(new Vector2D(1, 1)));
     }
 
     void addRandomSuperBoid() {
@@ -83,6 +79,6 @@ public class Simulation {
     }
 
     Iterable<SimulationObject> getObjects() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return objects;
     }
 }

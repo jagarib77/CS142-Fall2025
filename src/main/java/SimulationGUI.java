@@ -8,8 +8,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class SimulationGUI extends JFrame {
-    private Simulation simulation;
-    private GridPanel gridPanel;
+    private final Simulation simulation;
+    private final GridPanel gridPanel;
     private JButton startButton;
     private JButton pauseButton;
     private JButton addBoidButton;

@@ -1,6 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        Greetings.all().forEach(System.out::println);
-        //test line to show commit
+        Simulation simulation = new Simulation(800, 800);
+        SimulationGUI simulationGUI = new SimulationGUI(simulation);
+        simulationGUI.setVisible(true);
     }
 }
