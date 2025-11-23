@@ -8,7 +8,7 @@ Apollo/Preston
 */
 
 class SimulationObject {
-    Vector2D position;
+    Vector2D position = new Vector2D(0,0);
     Color color;
     
     public SimulationObject(Vector2D position) {
@@ -28,8 +28,9 @@ class SimulationObject {
 
     }
     
-    public void draw(Graphics2D g2) {
-        g2.setColor(color);
-        g2.fillRect((int)position.x, (int)position.y, 1, 1);
+    public void draw(SimulationGUI simulationGUI, Graphics2D g2) {
+        simulationGUI.paintGridPixel((int)position.x,
+                                     (int)position.y,
+                                     1,1,color, g2);
     }
 }

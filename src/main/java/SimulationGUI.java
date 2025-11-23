@@ -25,7 +25,7 @@ public class SimulationGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        gridPanel = new GridPanel(simulation);
+        gridPanel = new GridPanel(simulation, this);
         add(gridPanel, BorderLayout.CENTER);
 
         JPanel controls = new JPanel();
@@ -70,30 +70,42 @@ public class SimulationGUI extends JFrame {
         setSize(800, 800);
         setVisible(true);
     }
+    
+    public void paintGridPixel(int x, int y, int width, int height, Color color, Graphics2D g2) {
+        g2.setColor(color);
+        int gridSize = gridPanel.getGridSize();
+        g2.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
+    }
 
     private static class GridPanel extends JPanel {
         private Simulation simulation;
-
-        public GridPanel(Simulation sim) {
+        private SimulationGUI simGUI;
+        final int GRID_SIZE = 20;
+        
+        public GridPanel(Simulation sim, SimulationGUI simGUI) {
             this.simulation = sim;
+            this.simGUI = simGUI;
             setBackground(Color.WHITE);
         }
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
-
-            int gridSize = 20;
+            
             g2.setColor(Color.LIGHT_GRAY);
-            for (int x = 0; x < getWidth(); x += gridSize) {
+            for (int x = 0; x < getWidth(); x += GRID_SIZE) {
                 g2.drawLine(x, 0, x, getHeight());
             }
-            for (int y = 0; y < getHeight(); y += gridSize) {
+            for (int y = 0; y < getHeight(); y += GRID_SIZE) {
                 g2.drawLine(0, y, getWidth(), y);
             }
 
             for (SimulationObject obj : simulation.getObjects()) {
-                obj.draw(g2);
+                obj.draw(simGUI, g2);
             }
+        }
+        
+        public int getGridSize() {
+            return GRID_SIZE;
         }
     }
 }
