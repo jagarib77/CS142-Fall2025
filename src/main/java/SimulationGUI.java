@@ -10,14 +10,6 @@ import java.util.ArrayList;
 public class SimulationGUI extends JFrame {
     private final Simulation simulation;
     private final GridPanel gridPanel;
-    private JButton startButton;
-    private JButton pauseButton;
-    private JButton addBoidButton;
-    private JButton addSuperBoidButton;
-    private JButton addSadBoidButton;
-    private JButton addCarButton;
-    private JButton addTreeButton;
-    private JButton addWindowButton;
 
     public SimulationGUI(Simulation sim) {
         this.simulation = sim;
@@ -31,14 +23,14 @@ public class SimulationGUI extends JFrame {
         JPanel controls = new JPanel();
         controls.setLayout(new GridLayout(2, 4));
 
-        startButton = new JButton("Start");
-        pauseButton = new JButton("Pause");
-        addBoidButton = new JButton("Add Boid");
-        addSuperBoidButton = new JButton("Add SuperBoid");
-        addSadBoidButton = new JButton("Add SadBoid");
-        addCarButton = new JButton("Add Car");
-        addTreeButton = new JButton("Add Tree");
-        addWindowButton = new JButton("Add Window");
+        JButton startButton = new JButton("Start");
+        JButton pauseButton = new JButton("Pause");
+        JButton addBoidButton = new JButton("Add Boid");
+        JButton addSuperBoidButton = new JButton("Add SuperBoid");
+        JButton addSadBoidButton = new JButton("Add SadBoid");
+        JButton addCarButton = new JButton("Add Car");
+        JButton addTreeButton = new JButton("Add Tree");
+        JButton addWindowButton = new JButton("Add Window");
 
         controls.add(startButton);
         controls.add(pauseButton);
