@@ -7,8 +7,8 @@ Preston
 */
 
 public class Window extends Obstacle {
-    public Window(Vector2D position, Vector2D size) {
-        super(position, size);
+    public Window(Vector2D position, double diameter) {
+        super(position, new Vector2D(diameter, diameter));
     }
     
     @Override

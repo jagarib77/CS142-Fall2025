@@ -8,10 +8,12 @@ Preston
 
 public class Car extends Obstacle {
     double speed;
+    final double DIAMETER = 4;
     
-    public Car(Vector2D position, double diameter, double speed) {
-        super(position, new Vector2D(diameter, diameter));
+    public Car(Vector2D position, double speed) {
+        super(position);
         this.speed = speed;
+        setSize(new Vector2D(DIAMETER, DIAMETER));
     }
     
     @Override

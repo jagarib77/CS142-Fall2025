@@ -7,11 +7,15 @@ Preston
 */
 
 public abstract class Obstacle extends SimulationObject {
-    Vector2D size;
+    Vector2D size = new Vector2D(1,1);
     
     public Obstacle(Vector2D position, Vector2D size) {
         super(position);
         this.size = size;
+    }
+    
+    public Obstacle(Vector2D position) {
+        super(position);
     }
     
     // called when a boid bumps into this obstacle
@@ -46,5 +50,9 @@ public abstract class Obstacle extends SimulationObject {
     
     public Vector2D getSize() {
         return size;
+    }
+    
+    public void setSize(Vector2D size) {
+        this.size = size;
     }
 }

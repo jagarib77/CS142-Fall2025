@@ -22,8 +22,8 @@ public class Simulation {
 
     private void initializeGrid() {
         Boid b = new Boid(new Vector2D(1, 1));
-        Tree t = new Tree(new Vector2D(1, 1), new Vector2D(1 , 1));
-        Car c = new Car(new Vector2D(3, 2), new Vector2D(1,1), 2);
+        Tree t = new Tree(new Vector2D(1, 1), 5);
+        Car c = new Car(new Vector2D(3, 2), 2);
 
         addObject(b);
         addObject(t);
@@ -71,15 +71,15 @@ public class Simulation {
     }
 
     void addRandomCar() {
-        objects.add(new Car(getRandomPoint(), new Vector2D(3, 5), 1));
+        objects.add(new Car(getRandomPoint(), 1));
     }
 
     void addRandomTree() {
-        objects.add(new Tree(getRandomPoint(), new Vector2D(2, 2)));
+        objects.add(new Tree(getRandomPoint(), 2));
     }
 
     void addRandomWindow() {
-        objects.add(new Window(getRandomPoint(), new Vector2D(2, 2)));
+        objects.add(new Window(getRandomPoint(), 2));
     }
 
     Iterable<SimulationObject> getObjects() {
