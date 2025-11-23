@@ -1,13 +1,13 @@
 /*
 Jake
 */
-
+import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class SimulationGUI extends JFrame {
+    private static final int GRID_SIZE = 20;
     private final Simulation simulation;
     private final GridPanel gridPanel;
 
@@ -17,41 +17,22 @@ public class SimulationGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        gridPanel = new GridPanel(simulation, this);
+        gridPanel = new GridPanel(simulation, this, GRID_SIZE);
         add(gridPanel, BorderLayout.CENTER);
 
         JPanel controls = new JPanel();
         controls.setLayout(new GridLayout(2, 4));
 
-        JButton startButton = new JButton("Start");
-        JButton pauseButton = new JButton("Pause");
-        JButton addBoidButton = new JButton("Add Boid");
-        JButton addSuperBoidButton = new JButton("Add SuperBoid");
-        JButton addSadBoidButton = new JButton("Add SadBoid");
-        JButton addCarButton = new JButton("Add Car");
-        JButton addTreeButton = new JButton("Add Tree");
-        JButton addWindowButton = new JButton("Add Window");
-
-        controls.add(startButton);
-        controls.add(pauseButton);
-        controls.add(addBoidButton);
-        controls.add(addSuperBoidButton);
-        controls.add(addSadBoidButton);
-        controls.add(addCarButton);
-        controls.add(addTreeButton);
-        controls.add(addWindowButton);
+        controls.add(createButton("Start", e -> simulation.start()));
+        controls.add(createButton("Pause", e -> simulation.pause()));
+        controls.add(createHoldButton("Add Boid", () -> simulation.addRandomBoid()));
+        controls.add(createHoldButton("Add SuperBoid", () -> simulation.addRandomSuperBoid()));
+        controls.add(createHoldButton("Add SadBoid", () -> simulation.addRandomSadBoid()));
+        controls.add(createHoldButton("Add Car", () -> simulation.addRandomCar()));
+        controls.add(createHoldButton("Add Tree", () -> simulation.addRandomTree()));
+        controls.add(createHoldButton("Add Window", () -> simulation.addRandomWindow()));
 
         add(controls, BorderLayout.SOUTH);
-
-        startButton.addActionListener(e -> simulation.start());
-        pauseButton.addActionListener(e -> simulation.pause());
-
-        addBoidButton.addActionListener(e -> simulation.addRandomBoid());
-        addSuperBoidButton.addActionListener(e -> simulation.addRandomSuperBoid());
-        addSadBoidButton.addActionListener(e -> simulation.addRandomSadBoid());
-        addCarButton.addActionListener(e -> simulation.addRandomCar());
-        addTreeButton.addActionListener(e -> simulation.addRandomTree());
-        addWindowButton.addActionListener(e -> simulation.addRandomWindow());
 
         Timer timer = new Timer(16, evt -> {
             simulation.step();
@@ -63,6 +44,37 @@ public class SimulationGUI extends JFrame {
         setVisible(true);
     }
     
+    private JButton createButton(String text, ActionListener listener) {
+        JButton button = new JButton(text);
+        button.addActionListener(listener);
+        return button;
+    }
+    
+    private JButton createHoldButton(String text, Runnable action) {
+        JButton button = new JButton(text);
+        Timer holdTimer = new Timer(70, e -> action.run());
+        holdTimer.setInitialDelay(0);
+        
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                holdTimer.start();
+            }
+            
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                holdTimer.stop();
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e) {
+                holdTimer.stop();
+            }
+        });
+        
+        return button;
+    }
+    
     public void paintGridPixel(int x, int y, int width, int height, Color color, Graphics2D g2) {
         g2.setColor(color);
         int gridSize = gridPanel.getGridSize();
@@ -72,11 +84,12 @@ public class SimulationGUI extends JFrame {
     private static class GridPanel extends JPanel {
         private Simulation simulation;
         private SimulationGUI simGUI;
-        final int GRID_SIZE = 20;
+        private final int GRID_SIZE;
         
-        public GridPanel(Simulation sim, SimulationGUI simGUI) {
+        public GridPanel(Simulation sim, SimulationGUI simGUI, int gridSize) {
             this.simulation = sim;
             this.simGUI = simGUI;
+            this.GRID_SIZE = gridSize;
             setBackground(Color.WHITE);
         }
         protected void paintComponent(Graphics g) {
