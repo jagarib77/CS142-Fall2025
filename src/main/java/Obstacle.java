@@ -21,7 +21,7 @@ public abstract class Obstacle extends SimulationObject {
     public void draw(SimulationGUI simulationGUI, Graphics2D g2) {
         simulationGUI.paintGridPixel((int)position.x,
                                      (int)position.y,
-                                     (int)size.x,(int)size.y,color, g2);
+                                     (int)size.x,(int)size.y,getColor(), g2);
     }
     
     public boolean isOverlapped(Vector2D point) {
