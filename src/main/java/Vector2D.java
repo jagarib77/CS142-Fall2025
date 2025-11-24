@@ -84,4 +84,8 @@ public class Vector2D {
     public Vector2D times(double t) {
         return new Vector2D(x * t, y * t);
     }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }

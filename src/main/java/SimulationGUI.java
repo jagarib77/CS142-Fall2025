@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class SimulationGUI extends JFrame {
-    private static final int GRID_SIZE = 20;
+    private static final int GRID_SIZE = 10;
     private final Simulation simulation;
     private final GridPanel gridPanel;
 
@@ -91,6 +91,7 @@ public class SimulationGUI extends JFrame {
             this.simGUI = simGUI;
             this.GRID_SIZE = gridSize;
             setBackground(Color.WHITE);
+            setPreferredSize(new Dimension(simulation.getCols() * GRID_SIZE, simulation.getRows() * GRID_SIZE));
         }
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);

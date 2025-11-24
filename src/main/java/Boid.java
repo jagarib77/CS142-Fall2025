@@ -2,66 +2,95 @@ import java.awt.Color;
 
 class Boid extends SimulationObject{
     private Vector2D velocity;
+    private final double edgeMargin = 5.0;
+    private final double turnFactor = 1.0;
+    private int gridRows;
+    private int gridCols;
 
-    public Boid(Vector2D position) {
-    super(position);
-    this.velocity = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1).normalized().times(0.5);
+    public Boid(Vector2D position, int gridRows, int gridCols) {
+        super(position);
+        this.gridRows = gridRows;
+        this.gridCols = gridCols;
+        this.velocity = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1).normalized().times(0.5);
     }
 
     public void update(Boid[] boids) {
-        Vector2D separationDelta = new Vector2D();
+        Vector2D acceleration = new Vector2D();
+
+        // 1. Calculate Forces
+        Vector2D separationForce = new Vector2D();
         Vector2D alignmentSum = new Vector2D();
         Vector2D cohesionSum = new Vector2D();
         int visibleNeighbors = 0;
+
         for(Boid boid : boids){
             if(boid == this) continue;
-            if(this.position.distanceTo(boid.getPosition()) < this.getProtectedRange()){
-                separationDelta = separationDelta.plus(this.position.minus(boid.getPosition()));
+            double dist = this.position.distanceTo(boid.getPosition());
+
+            if(dist < this.getProtectedRange()){
+                separationForce = separationForce.plus(this.position.minus(boid.getPosition()));
             }
-            if(this.position.distanceTo(boid.getPosition()) < this.getVisibleRange()){
+
+            if(dist < this.getVisibleRange()){
                 alignmentSum = alignmentSum.plus(boid.getVelocity());
                 cohesionSum = cohesionSum.plus(boid.getPosition());
                 visibleNeighbors++;
             }
         }
-        velocity = velocity.plus(separationDelta.times(this.getSeparationFactor()));
+
+        acceleration = acceleration.plus(separationForce.times(this.getSeparationFactor()));
+
         if(visibleNeighbors > 0){
             Vector2D avgAlignment = alignmentSum.times(1.0 / visibleNeighbors);
-            velocity = velocity.plus(avgAlignment.minus(velocity).times(this.getAlignmentFactor()));
+            Vector2D alignmentForce = avgAlignment.minus(this.velocity).times(this.getAlignmentFactor());
+            acceleration = acceleration.plus(alignmentForce);
+
             Vector2D avgPosition = cohesionSum.times(1.0 / visibleNeighbors);
             Vector2D cohesionForce = avgPosition.minus(this.position).times(this.getAttractionFactor());
-            velocity = velocity.plus(cohesionForce);
+            acceleration = acceleration.plus(cohesionForce);
         }
+
+        Vector2D boundaryForce = new Vector2D();
+        if(this.position.x < edgeMargin) boundaryForce.x += turnFactor;
+        if(this.position.x > this.gridRows - edgeMargin) boundaryForce.x -= turnFactor;
+        if(this.position.y < edgeMargin) boundaryForce.y += turnFactor;
+        if(this.position.y > this.gridCols - edgeMargin) boundaryForce.y -= turnFactor;
+
+        acceleration = acceleration.plus(boundaryForce);
+
+        velocity = velocity.plus(acceleration);
+
         double speed = velocity.magnitude();
         if(speed > getMaximumSpeed()){
             velocity = velocity.normalized().times(getMaximumSpeed());
         }else if(speed < getMinimumSpeed()){
             velocity = velocity.normalized().times(getMinimumSpeed());
         }
+
         position = position.plus(velocity);
     }
 
     public double getVisibleRange(){
-        return 30.0;
+        return 15.0;
     }
     public double getProtectedRange(){
-        return 10.0;
+        return 3.0;
     }
     public double getSeparationFactor(){
-        return 0.05;
+        return 0.1;
     }
     public double getAlignmentFactor(){
-        return 1.0;
+        return 0.01;
     }
-    public double getAttractionFactor(){
-        return 0.05;
+    public double getAttractionFactor() {
+        return 0.01;
     }
 
     public double getMinimumSpeed(){
-        return 0.3;
+        return 0.1;
     }
     public double getMaximumSpeed(){
-        return 1.1;
+        return 0.5;
     }
 
     @Override
@@ -75,6 +104,6 @@ class Boid extends SimulationObject{
     
     @Override
     public Color getColor() {
-        return new Color(0, 0, 255);
+        return new Color(0, 150, 150);
     }
 }

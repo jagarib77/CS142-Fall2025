@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class Simulation {
 
-    private int rows;
-    private int cols;
+    private final int rows;
+    private final int cols;
     private SimulationObject[][] grid;
     private ArrayList<SimulationObject> objects;
     private boolean isActive = true;
@@ -20,8 +20,15 @@ public class Simulation {
         initializeGrid();
     }
 
+    public int getCols() {
+        return cols;
+    }
+    public int getRows() {
+        return rows;
+    }
+
     private void initializeGrid() {
-        Boid b = new Boid(new Vector2D(1, 1));
+        Boid b = new Boid(new Vector2D(1, 1), this.rows, this.cols);
         Tree t = new Tree(new Vector2D(1, 1), 5);
         Car c = new Car(new Vector2D(3, 2), 2);
 
@@ -71,15 +78,15 @@ public class Simulation {
     }
 
     void addRandomBoid() {
-        objects.add(new Boid(getRandomPoint()));
+        objects.add(new Boid(getRandomPoint(), this.rows, this.cols));
     }
 
     void addRandomSuperBoid() {
-        objects.add(new SuperBoid(getRandomPoint()));
+        objects.add(new SuperBoid(getRandomPoint(), this.rows, this.cols));
     }
 
     void addRandomSadBoid() {
-        objects.add(new SadBoid(getRandomPoint()));
+        objects.add(new SadBoid(getRandomPoint(), this.rows, this.cols));
     }
 
     void addRandomCar() {

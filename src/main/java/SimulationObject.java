@@ -9,6 +9,8 @@ Apollo/Preston
 
 class SimulationObject {
     Vector2D position = new Vector2D(0,0);
+    int gridRows;
+    int gridCols;
     
     public SimulationObject(Vector2D position) {
         this.position = position;
