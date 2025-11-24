@@ -1,7 +1,7 @@
 /*
 Jake
 */
-import java.util.ArrayList;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,19 +20,56 @@ public class SimulationGUI extends JFrame {
         gridPanel = new GridPanel(simulation, this, GRID_SIZE);
         add(gridPanel, BorderLayout.CENTER);
 
-        JPanel controls = new JPanel();
-        controls.setLayout(new GridLayout(2, 4));
+        JPanel controlsPanel = new JPanel();
+        controlsPanel.setLayout(new BorderLayout());
 
-        controls.add(createButton("Start", e -> simulation.start()));
-        controls.add(createButton("Pause", e -> simulation.pause()));
-        controls.add(createHoldButton("Add Boid", () -> simulation.addRandomBoid()));
-        controls.add(createHoldButton("Add SuperBoid", () -> simulation.addRandomSuperBoid()));
-        controls.add(createHoldButton("Add SadBoid", () -> simulation.addRandomSadBoid()));
-        controls.add(createHoldButton("Add Car", () -> simulation.addRandomCar()));
-        controls.add(createHoldButton("Add Tree", () -> simulation.addRandomTree()));
-        controls.add(createHoldButton("Add Window", () -> simulation.addRandomWindow()));
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new GridLayout(2, 4));
 
-        add(controls, BorderLayout.SOUTH);
+        buttons.add(createButton("Start", e -> simulation.start()));
+        buttons.add(createButton("Pause", e -> simulation.pause()));
+        buttons.add(createHoldButton("Add Boid", () -> simulation.addRandomBoid()));
+        buttons.add(createHoldButton("Add SuperBoid", () -> simulation.addRandomSuperBoid()));
+        buttons.add(createHoldButton("Add SadBoid", () -> simulation.addRandomSadBoid()));
+        buttons.add(createHoldButton("Add Car", () -> simulation.addRandomCar()));
+        buttons.add(createHoldButton("Add Tree", () -> simulation.addRandomTree()));
+        buttons.add(createHoldButton("Add Window", () -> simulation.addRandomWindow()));
+
+        JPanel speedPanel = new JPanel();
+        speedPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        
+        JLabel speedLabel = new JLabel("Speed Multiplier:");
+        JSlider speedSlider = new JSlider(0, 20, 10);
+        JTextField speedText = new JTextField("1.0", 5);
+        
+        speedSlider.addChangeListener(e -> {
+            double speed = speedSlider.getValue() / 10.0;
+            speedText.setText(String.format("%.1f", speed));
+            simulation.setSpeedMultiplier(speed);
+        });
+        
+        speedText.addActionListener(e -> {
+            try {
+                double speed = Double.parseDouble(speedText.getText());
+                if(speed >= 0.0 && speed <= 2.0) {
+                    speedSlider.setValue((int)(speed * 10));
+                    simulation.setSpeedMultiplier(speed);
+                } else {
+                    speedText.setText(String.format("%.1f", speedSlider.getValue() / 10.0));
+                }
+            } catch(NumberFormatException ex) {
+                speedText.setText(String.format("%.1f", speedSlider.getValue() / 10.0));
+            }
+        });
+        
+        speedPanel.add(speedLabel);
+        speedPanel.add(speedSlider);
+        speedPanel.add(speedText);
+        
+        controlsPanel.add(buttons, BorderLayout.CENTER);
+        controlsPanel.add(speedPanel, BorderLayout.SOUTH);
+
+        add(controlsPanel, BorderLayout.SOUTH);
 
         Timer timer = new Timer(16, evt -> {
             simulation.step();
@@ -52,7 +89,7 @@ public class SimulationGUI extends JFrame {
     
     private JButton createHoldButton(String text, Runnable action) {
         JButton button = new JButton(text);
-        Timer holdTimer = new Timer(70, e -> action.run());
+        Timer holdTimer = new Timer(100, e -> action.run());
         holdTimer.setInitialDelay(0);
         
         button.addMouseListener(new MouseAdapter() {

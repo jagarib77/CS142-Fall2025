@@ -11,6 +11,7 @@ public class Simulation {
     private SimulationObject[][] grid;
     private ArrayList<SimulationObject> objects;
     private boolean isActive = true;
+    private double speedMultiplier = 1.0;
 
     public Simulation(int rows, int cols) {
         this.rows = rows;
@@ -57,7 +58,7 @@ public class Simulation {
             
             for(SimulationObject obj : objects) {
                 if(obj instanceof Boid) {
-                    ((Boid)obj).update(boids);
+                    ((Boid)obj).update(boids, speedMultiplier);
                 } else {
                     obj.update();
                 }
@@ -103,5 +104,13 @@ public class Simulation {
 
     Iterable<SimulationObject> getObjects() {
         return objects;
+    }
+
+    public void setSpeedMultiplier(double multiplier) {
+        this.speedMultiplier = multiplier;
+    }
+
+    public double getSpeedMultiplier() {
+        return speedMultiplier;
     }
 }
