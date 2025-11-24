@@ -60,9 +60,9 @@ public class Simulation {
                 if(obj instanceof Boid) {
                     ((Boid)obj).update(boids, speedMultiplier);
                 } else {
-                    obj.update();
-                }
+                    obj.update(speedMultiplier);
             }
+        }
         }
     }
 
@@ -91,7 +91,7 @@ public class Simulation {
     }
 
     void addRandomCar() {
-        objects.add(new Car(getRandomPoint(), 1));
+        objects.add(new Car(getRandomPoint(), 0.2));
     }
 
     void addRandomTree() {

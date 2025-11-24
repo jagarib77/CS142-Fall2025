@@ -23,6 +23,9 @@ class SimulationObject {
     public void update() {
 
     }
+    public void update(double speedMultiplier) {
+    update(); 
+}
     
     public void draw(SimulationGUI simulationGUI, Graphics2D g2) {
         simulationGUI.paintGridPixel((int)position.x,
