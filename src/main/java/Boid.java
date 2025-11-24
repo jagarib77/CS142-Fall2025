@@ -4,11 +4,11 @@ class Boid extends SimulationObject{
     private Vector2D velocity;
 
     public Boid(Vector2D position) {
-    super(position);
-    this.velocity = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1).normalized().times(0.5);
+        super(position);
+        this.velocity = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1).normalized().times(0.5);
     }
 
-    public void update(Boid[] boids) {
+    public void update(Boid[] boids, double speedMultiplier) {
         Vector2D separationDelta = new Vector2D();
         Vector2D alignmentSum = new Vector2D();
         Vector2D cohesionSum = new Vector2D();
@@ -38,7 +38,7 @@ class Boid extends SimulationObject{
         }else if(speed < getMinimumSpeed()){
             velocity = velocity.normalized().times(getMinimumSpeed());
         }
-        position = position.plus(velocity);
+        position = position.plus(velocity.times(speedMultiplier));
     }
 
     public double getVisibleRange(){
@@ -61,7 +61,7 @@ class Boid extends SimulationObject{
         return 0.3;
     }
     public double getMaximumSpeed(){
-        return 1.1;
+        return 1.5;
     }
 
     @Override
