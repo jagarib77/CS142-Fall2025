@@ -115,7 +115,7 @@ public class SimulationGUI extends JFrame {
     public void paintGridPixel(int x, int y, int width, int height, Color color, Graphics2D g2) {
         g2.setColor(color);
         int gridSize = gridPanel.getGridSize();
-        g2.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
+        g2.fillRect(x * gridSize, y * gridSize, width * gridSize, height * gridSize);
     }
 
     private static class GridPanel extends JPanel {
