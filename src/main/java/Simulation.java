@@ -40,8 +40,20 @@ public class Simulation {
 
     public void step() {
         if(isActive) {
+            ArrayList<Boid> boidList = new ArrayList<>();
             for(SimulationObject obj : objects) {
-                obj.update();
+                if(obj instanceof Boid) {
+                    boidList.add((Boid)obj);
+                }
+            }
+            Boid[] boids = boidList.toArray(new Boid[0]);
+            
+            for(SimulationObject obj : objects) {
+                if(obj instanceof Boid) {
+                    ((Boid)obj).update(boids);
+                } else {
+                    obj.update();
+                }
             }
         }
     }
