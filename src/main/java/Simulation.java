@@ -56,27 +56,29 @@ public class Simulation {
             }
             Boid[] boids = boidList.toArray(new Boid[0]);
             
-            // Collect obstacles once
-            ArrayList<Obstacle> obstacles = new ArrayList<>();
+            ArrayList<Obstacle> avoidableObstacles = new ArrayList<>();
+            ArrayList<Obstacle> collidableObstacles = new ArrayList<>();
+            
             for(SimulationObject obj : objects) {
-                if(obj instanceof Obstacle && !(obj instanceof Window)) {
-                    obstacles.add((Obstacle) obj);
+                if(obj instanceof Obstacle) {
+                    collidableObstacles.add((Obstacle) obj);
+                    if(!(obj instanceof Window)) {
+                        avoidableObstacles.add((Obstacle) obj);
+                    }
                 }
             }
             
-            // Update all objects
             for(SimulationObject obj : objects) {
                 if(obj instanceof Boid) {
-                    ((Boid)obj).update(boids, speedMultiplier);
+                    ((Boid)obj).update(boids, avoidableObstacles.toArray(new Obstacle[0]), speedMultiplier);
                 } else {
                     obj.update(speedMultiplier);
                 }
             }
             
-            // Check for collisions - don't iterate over objects list
             ArrayList<Boid> boidsToRemove = new ArrayList<>();
             for(Boid boid : boidList) {
-                for(Obstacle obstacle : obstacles) {
+                for(Obstacle obstacle : collidableObstacles) {
                     if(obstacle.isOverlapped(boid.getPosition())) {
                         obstacle.bump(boid);
                         boidsToRemove.add(boid);
@@ -85,7 +87,6 @@ public class Simulation {
                 }
             }
             
-            // Remove dead boids AFTER iteration is done
             objects.removeAll(boidsToRemove);
         }
     }

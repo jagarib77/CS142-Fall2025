@@ -14,7 +14,7 @@ class Boid extends SimulationObject{
         this.velocity = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1).normalized().times(0.5);
     }
 
-    public void update(Boid[] boids, double speedMultiplier) {
+    public void update(Boid[] boids, Obstacle[] obstacles, double speedMultiplier) {
         Vector2D acceleration = new Vector2D();
 
         Vector2D separationForce = new Vector2D();
@@ -48,6 +48,19 @@ class Boid extends SimulationObject{
             Vector2D cohesionForce = avgPosition.minus(this.position).times(this.getAttractionFactor());
             acceleration = acceleration.plus(cohesionForce);
         }
+
+        Vector2D obstacleAvoidance = new Vector2D();
+        double obstacleAvoidanceRange = 10.0;
+        for(Obstacle obstacle : obstacles) {
+            double dist = this.position.distanceTo(obstacle.getPosition());
+            if(dist < obstacleAvoidanceRange) {
+                Vector2D awayFromObstacle = this.position.minus(obstacle.getPosition());
+                double strength = (obstacleAvoidanceRange - dist) / obstacleAvoidanceRange;
+                obstacleAvoidance = obstacleAvoidance.plus(awayFromObstacle.times(strength));
+            }
+        }
+        double obstacleAvoidanceFactor = 0.5;
+        acceleration = acceleration.plus(obstacleAvoidance.times(obstacleAvoidanceFactor));
 
         Vector2D boundaryForce = new Vector2D();
         if(this.position.x < edgeMargin) boundaryForce.x += turnFactor;
