@@ -16,9 +16,13 @@ public class SimulationController {
         timer = new Timer(delayMs, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                grid.update();
-                gridPanel.repaint();
-                statusPanel.repaint();
+                if (!grid.isGameOver()) {
+                    grid.update();
+                    gridPanel.repaint();
+                    statusPanel.repaint();
+                } else {
+                    stopTimer();
+                }
             }
         });
         timer.start();
