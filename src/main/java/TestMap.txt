@@ -1,0 +1,10 @@
+E, S, S, S, S, S, S, S, S, S
+E, S, S, SW, SW, SW, SW, W, W
+E, SE, S, W, SW, W, W, W, SW, W
+E, SE, SW, S, NE, E, SW, S, SW, W
+E, SW, S, S, N, W, S, S, SW, W
+E, S, SE, S, N, NW, SW, SW, S, W
+E, SE, SE, E, N, NW, W, SW, W, W
+E, SE, E, NE, E, N, NW, NW, W, W
+E, SE, E, NE, E, N, NW, NW, W, W
+N, N, N, N, N, N, N, N, N, N
