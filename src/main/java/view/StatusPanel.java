@@ -6,12 +6,14 @@ import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static model.config.SimulationConstants.*;
+
 public class StatusPanel extends JPanel {
     private final SimulationGrid grid;
 
     public StatusPanel(SimulationGrid grid) {
         this.grid = grid;
-        setPreferredSize(new Dimension(200, grid.getHeight() * 12));
+        setPreferredSize(new Dimension(STATUS_PANEL_WIDTH, grid.getHeight() * CELL_SIZE));
         setBackground(Color.DARK_GRAY);
     }
 
@@ -19,30 +21,28 @@ public class StatusPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Map symbol -> entity name
         Map<Character, String> entityInfo = new LinkedHashMap<>();
-        entityInfo.put('C', "Civilian");
-        entityInfo.put('S', "Soldier");
-        entityInfo.put('E', "EliteZombie");
-        entityInfo.put('Z', "CommonZombie");
-        entityInfo.put('W', "Weapon");
-        entityInfo.put('A', "Armor");
-        entityInfo.put('M', "Medkit");
+        entityInfo.put(CIVILIAN_CHAR, CIVILIAN_STRING);
+        entityInfo.put(SOLDIER_CHAR, SOLDIER_STRING);
+        entityInfo.put(ELITE_ZOMBIE_CHAR, ELITE_ZOMBIE_STRING);
+        entityInfo.put(COMMON_ZOMBIE_CHAR, COMMON_ZOMBIE_STRING);
+        entityInfo.put(WEAPON_CHAR, WEAPON_STRING);
+        entityInfo.put(ARMOR_CHAR, ARMOR_STRING);
+        entityInfo.put(MEDKIT_CHAR, MEDKIT_STRING);
 
-        g.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        g.setFont(GAME_STAT_FONT);
         int y = 20;
 
         for (Map.Entry<Character, String> entry : entityInfo.entrySet()) {
             char symbol = entry.getKey();
             String name = entry.getValue();
 
-            int count = grid.countEntitiesBySymbol(symbol); // method to add in SimulationGrid
+            int count = grid.countEntitiesBySymbol(symbol);
 
-            // Draw color box
-            g.setColor(getColorForSymbol(symbol));
-            g.fillRect(10, y - 12, 12, 12);
+            g.setColor(getColor(symbol));
+            g.fillRect(CELL_SIZE, y - CELL_SIZE, CELL_SIZE, CELL_SIZE);
 
-            // Draw text
             g.setColor(Color.WHITE);
             g.drawString(name + ": " + count, 30, y);
 
@@ -50,15 +50,17 @@ public class StatusPanel extends JPanel {
         }
     }
 
-    private Color getColorForSymbol(char c) {
+    private Color getColor(char c) {
         return switch (c) {
-            case 'C', 'S', 'I' -> new Color(100, 180, 255);
-            case 'Z' -> Color.YELLOW;
-            case 'E' -> Color.MAGENTA;
-            case 'W' -> Color.ORANGE;
-            case 'A' -> Color.LIGHT_GRAY;
-            case 'M' -> Color.GREEN;
-            default -> Color.DARK_GRAY;
+            case CIVILIAN_CHAR -> COLOR_CIVILIAN;
+            case INFECTION_CHAR -> COLOR_INFECTION;
+            case SOLDIER_CHAR -> COLOR_SOLDIER;
+            case COMMON_ZOMBIE_CHAR -> COLOR_COMMON_ZOMBIE;
+            case ELITE_ZOMBIE_CHAR -> COLOR_ELITE_ZOMBIE;
+            case WEAPON_CHAR -> COLOR_WEAPON;
+            case ARMOR_CHAR -> COLOR_ARMOR;
+            case MEDKIT_CHAR -> COLOR_MEDKIT;
+            default -> COLOR_DEFAULT;
         };
     }
 }

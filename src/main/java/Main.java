@@ -84,6 +84,8 @@ public class Main {
         restartBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 controller.stopTimer();
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(restartBtn);
+                frame.dispose();
                 startNewGame(); // restart the simulation
             }
         });

@@ -6,7 +6,6 @@ import model.world.SimulationGrid;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Base class for all living entities with health, stats, and behavior system.

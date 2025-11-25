@@ -1,7 +1,7 @@
 package model.world;
 
 import model.*;
-import model.config.SimulationConstants;
+import static model.config.SimulationConstants.*;
 import model.entities.*;
 import model.items.*;
 
@@ -21,19 +21,19 @@ public final class SimulationGrid {
     private final Random rng = new Random();
 
     public SimulationGrid() {
-        this.width  = SimulationConstants.WORLD_WIDTH;
-        this.height = SimulationConstants.WORLD_HEIGHT;
+        this.width  = WORLD_WIDTH;
+        this.height = WORLD_HEIGHT;
         this.grid  = new Entity[height][width];
     }
 
     public void spawnInitialWorld() {
-        spawn(Civilian.class,     SimulationConstants.SPAWN_CIVILIANS);
-        spawn(Soldier.class,      SimulationConstants.SPAWN_SOLDIERS);
-        spawn(CommonZombie.class, SimulationConstants.SPAWN_COMMON_ZOMBIES);
-        spawn(EliteZombie.class,  SimulationConstants.SPAWN_ELITES);
-        spawn(Weapon.class,       SimulationConstants.SPAWN_WEAPONS);
-        spawn(Armor.class,        SimulationConstants.SPAWN_ARMORS);
-        spawn(Medkit.class,       SimulationConstants.SPAWN_MEDKITS);
+        spawn(Civilian.class,     SPAWN_CIVILIANS);
+        spawn(Soldier.class,      SPAWN_SOLDIERS);
+        spawn(CommonZombie.class, SPAWN_COMMON_ZOMBIES);
+        spawn(EliteZombie.class,  SPAWN_ELITES);
+        spawn(Weapon.class,       SPAWN_WEAPONS);
+        spawn(Armor.class,        SPAWN_ARMORS);
+        spawn(Medkit.class,       SPAWN_MEDKITS);
     }
 
     private <T extends Entity> void spawn(Class<T> type, int count) {
@@ -172,27 +172,27 @@ public final class SimulationGrid {
         tryMove(entity, entity.getX() + dir.dx(), entity.getY() + dir.dy());
     }
 
-//    private void tryMove(LivingEntity entity, int nx, int ny) {
-//        if (nx < 0) nx = width - 1;
-//        else if (nx >= width) nx = 0;
-//
-//        if (ny < 0) ny = height - 1;
-//        else if (ny >= height) ny = 0;
-//
-//        if (grid[ny][nx] == null) {
-//            grid[entity.getY()][entity.getX()] = null;
-//            set(nx, ny, entity);
-//        }
-//    }
-
     private void tryMove(LivingEntity entity, int nx, int ny) {
-        nx = (nx + width) % width;
-        ny = (ny + height) % height; // wrap-around
+        if (nx < 0) nx = width - 1;
+        else if (nx >= width) nx = 0;
 
-        // Force move (ignore collisions)
-        grid[entity.getY()][entity.getX()] = null;
-        set(nx, ny, entity);
+        if (ny < 0) ny = height - 1;
+        else if (ny >= height) ny = 0;
+
+        if (grid[ny][nx] == null) {
+            grid[entity.getY()][entity.getX()] = null;
+            set(nx, ny, entity);
+        }
     }
+
+//    private void tryMove(LivingEntity entity, int nx, int ny) {
+//        nx = (nx + width) % width;
+//        ny = (ny + height) % height; // wrap-around
+//
+//        // Force move (ignore collisions)
+//        grid[entity.getY()][entity.getX()] = null;
+//        set(nx, ny, entity);
+//    }
 
     public <T extends LivingEntity> void moveTowardNearest(LivingEntity e, Class<T> target) {
         T t = findNearest(e.getX(), e.getY(), target);

@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 public class SimulationController {
     private final Timer timer;
-    private int delayMs = 180;  // Default speed
+    private int delayMs = 180;
 
     public SimulationController(SimulationGrid grid, GridPanel gridPanel, StatusPanel statusPanel) {
         timer = new Timer(delayMs, new ActionListener() {
@@ -18,7 +18,7 @@ public class SimulationController {
             public void actionPerformed(ActionEvent e) {
                 grid.update();
                 gridPanel.repaint();
-                statusPanel.repaint(); // keep counts updated
+                statusPanel.repaint();
             }
         });
         timer.start();

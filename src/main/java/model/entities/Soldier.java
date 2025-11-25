@@ -3,7 +3,7 @@ package model.entities;
 import model.LivingEntity;
 import model.behavior.Action;
 import model.behavior.Behavior;
-import model.config.SimulationConstants;
+import static model.config.SimulationConstants.*;
 import model.world.SimulationGrid;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.List;
  */
 public class Soldier extends Human {
     public Soldier() {
-        super(SimulationConstants.SOLDIER_CHAR);
-        maxHealth =  SimulationConstants.SOLDIER_HEALTH;
-        health = SimulationConstants.SOLDIER_HEALTH;
-        baseDamage = SimulationConstants.SOLDIER_DAMAGE;
-        baseSpeed = SimulationConstants.SOLDIER_SPEED;
+        super(SOLDIER_CHAR);
+        maxHealth =  SOLDIER_HEALTH;
+        health = SOLDIER_HEALTH;
+        baseDamage = SOLDIER_DAMAGE;
+        baseSpeed = SOLDIER_SPEED;
     }
 
     @Override protected List<Behavior> getBehaviors() {

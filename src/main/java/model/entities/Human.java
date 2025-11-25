@@ -2,7 +2,7 @@ package model.entities;
 
 import model.Entity;
 import model.LivingEntity;
-import model.config.SimulationConstants;
+import static model.config.SimulationConstants.*;
 import model.items.Equipment;
 import model.world.SimulationGrid;
 
@@ -12,8 +12,6 @@ import model.world.SimulationGrid;
 public abstract class Human extends LivingEntity {
     protected boolean infected = false;
     protected int infectionTimer = 0;
-    private static final int FORMATION_RADIUS = SimulationConstants.SETTLEMENT_FORMATION_RADIUS;
-
     protected char symbol;
 
     protected Human(char symbol) {
@@ -22,15 +20,15 @@ public abstract class Human extends LivingEntity {
 
     @Override
     public char getSymbol() {
-        if (shouldBecomeZombie()) return 'Z';
-        if (infectionTimer > 0) return 'I';
+        if (shouldBecomeZombie()) return COMMON_ZOMBIE_CHAR;
+        if (infectionTimer > 0) return INFECTION_CHAR;
         return symbol;
     }
 
     public void infect() {
         if (!infected) {
             infected = true;
-            infectionTimer = SimulationConstants.INFECTION_TURNS;
+            infectionTimer = INFECTION_TURNS;
         }
     }
 
@@ -45,8 +43,8 @@ public abstract class Human extends LivingEntity {
     protected boolean isInSettlement(SimulationGrid grid) {
         int nearbyHumans = 1;
 
-        for (int dy = -FORMATION_RADIUS; dy <= FORMATION_RADIUS; dy++) {
-            for (int dx = -FORMATION_RADIUS; dx <= FORMATION_RADIUS; dx++) {
+        for (int dy = -SETTLEMENT_FORMATION_RADIUS; dy <= SETTLEMENT_FORMATION_RADIUS; dy++) {
+            for (int dx = -SETTLEMENT_FORMATION_RADIUS; dx <= SETTLEMENT_FORMATION_RADIUS; dx++) {
                 int nx = getX() + dx;
                 int ny = getY() + dy;
                 if (!grid.isValid(nx, ny)) continue;
@@ -61,7 +59,7 @@ public abstract class Human extends LivingEntity {
             }
         }
 
-        return nearbyHumans >= SimulationConstants.SETTLEMENT_MIN_SIZE;
+        return nearbyHumans >= SETTLEMENT_MIN_SIZE;
     }
 
     protected void moveToFormSettlement(SimulationGrid grid) {
