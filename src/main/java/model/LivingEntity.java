@@ -20,7 +20,7 @@ public abstract class LivingEntity extends Entity {
     private int damageBonus = 0;
     private int defenseBonus = 0;
     private int speedBonus = 0;
-    protected final Random rng = new Random();
+    private int tieBreaker;
 
     public int getHealth() {
         return health;
@@ -49,7 +49,14 @@ public abstract class LivingEntity extends Entity {
     }
 
     public int getInitiative() {
-        return getSpeed() * 10 + rng.nextInt(20);
+        return getSpeed() * 10;
+    }
+
+    public int getTieBreaker() {
+        return tieBreaker;
+    }
+    public void setTieBreaker(int tieBreaker) {
+        this.tieBreaker = tieBreaker;
     }
 
     public void takeDamage(int dmg) {
@@ -62,18 +69,18 @@ public abstract class LivingEntity extends Entity {
     }
 
     public void attack(LivingEntity target) {
-        if (target != null && target.isAlive()) {
+        if (target != null && target.isPresent()) {
             target.takeDamage((getDamage()));
         }
     }
 
     @Override
-    public final boolean isAlive() {
+    public final boolean isPresent() {
         return health > 0;
     }
 
     public final boolean isDead() {
-        return !isAlive();
+        return !isPresent();
     }
 
     public final void kill() {
@@ -81,7 +88,7 @@ public abstract class LivingEntity extends Entity {
     }
 
     public final void act(SimulationGrid grid) {
-        if (!isAlive()) return;
+        if (!isPresent()) return;
         for (Behavior b : getBehaviors()) {
             Action result = b.execute(this, grid);
             if (result == Action.TRANSFORM || result == Action.DEAD) break;

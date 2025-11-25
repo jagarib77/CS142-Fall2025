@@ -1,0 +1,63 @@
+package model.entities;
+
+import model.LivingEntity;
+import model.behavior.Action;
+import model.behavior.Behavior;
+import model.config.SimulationConstants;
+import model.world.SimulationGrid;
+
+import java.util.List;
+
+/**
+ * Follows its Elite leader. Repels rival hordes. Never merges.
+ */
+public class CommonZombie extends Zombie {
+    public CommonZombie() {
+        maxHealth = health = SimulationConstants.COMMON_ZOMBIE_HEALTH;
+        baseDamage = SimulationConstants.COMMON_ZOMBIE_DAMAGE;
+        baseSpeed = SimulationConstants.COMMON_ZOMBIE_SPEED;
+    }
+
+    @Override
+    public char getSymbol() {
+        return SimulationConstants.COMMON_ZOMBIE_CHAR;
+    }
+
+    @Override protected List<Behavior> getBehaviors() {
+        return List.of(
+                this::repelRivals,
+                this::followLeader,
+                this::hunt,
+                this::infect
+        );
+    }
+
+    private Action repelRivals(LivingEntity me, SimulationGrid g) {
+        EliteZombie myLeader = g.findNearestElite(me.getX(), me.getY());
+        EliteZombie rival = g.findNearest(me.getX(), me.getY(), EliteZombie.class);
+        if (rival != null && rival != myLeader && g.distanceBetween(me, rival) <= SimulationConstants.RIVAL_REPEL_RANGE) {
+            int dx = me.getX() - rival.getX();
+            int dy = me.getY() - rival.getY();
+            g.moveToward(me.getX() + Integer.signum(dx), me.getY() + Integer.signum(dy), me);
+        }
+        return Action.MOVE;
+    }
+
+    private Action followLeader(LivingEntity me, SimulationGrid g) {
+        EliteZombie leader = g.findNearestElite(me.getX(), me.getY());
+        if (leader != null && g.distanceBetween(me, leader) > SimulationConstants.HORDE_FOLLOW_RANGE) {
+            g.moveToward(leader.getX(), leader.getY(), me);
+        }
+        return Action.MOVE;
+    }
+
+    private Action hunt(LivingEntity me, SimulationGrid g) {
+        g.moveTowardNearest(me, Human.class);
+        return Action.MOVE;
+    }
+
+    private Action infect(LivingEntity me, SimulationGrid g) {
+        infectNearby(g);
+        return Action.INFECT;
+    }
+}

@@ -16,7 +16,7 @@ public final class SimulationConstants {
 
     // Settlement System
     public static final int SETTLEMENT_MIN_SIZE = 6;
-    public static final int SETTLEMENT_DEFENSE_RANGE = 2;
+    public static final int SETTLEMENT_FORMATION_RADIUS = 2;
 
     // Zombie Horde System
     public static final int HORDE_FOLLOW_RANGE = 6;
