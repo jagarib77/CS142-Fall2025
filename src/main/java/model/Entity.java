@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Base class for all objects in the world.
+ */
 public abstract class Entity {
     protected int x;
     protected int y;
