@@ -13,7 +13,13 @@ public class Map {
     private Integer col;
 
     public Map(String filename) throws FileNotFoundException {
-        ArrayList<String> Rows = readLines(filename);
+        
+        try {
+            ArrayList<String> Rows = readLines(filename);
+        } 
+        catch (FileNotFoundException e) {
+            System.out.println("File Not Found")
+        }
         this.row = Rows.size();
         this.col = Rows.get(0).split(", ").length;
 
@@ -55,3 +61,4 @@ public class Map {
         return lines;
     }
 }
+
