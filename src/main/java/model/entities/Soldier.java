@@ -44,7 +44,7 @@ public class Soldier extends Human {
     }
 
     private Action attackZombies(LivingEntity me, SimulationGrid g) {
-        var z = g.findNearest(me.getX(), me.getY(), Zombie.class);
+        LivingEntity z = g.findNearest(me.getX(), me.getY(), Zombie.class);
         if (z != null && g.distanceBetween(me, z) <= 3) attack(z);
         return Action.ATTACK;
     }
