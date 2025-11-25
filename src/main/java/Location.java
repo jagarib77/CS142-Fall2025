@@ -1,7 +1,7 @@
-// Afnan Ali. CS 142. FALL 2025
-// 11/3/2025
-// Location.java
-// Stores a single location with x, y, and elevation
+// CS 142
+// AUTHOR: AFNAN
+// 11/24/2025
+
 
 import java.util.*;
 
@@ -41,4 +41,5 @@ public class Location {
 
 }
     
+
 
