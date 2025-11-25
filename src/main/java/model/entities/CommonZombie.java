@@ -62,4 +62,18 @@ public class CommonZombie extends Zombie {
         infectNearby(g);
         return Action.INFECT;
     }
+
+//    private Action attackOrInfect(LivingEntity me, SimulationGrid g) {
+//        Human target = g.findNearest(me.getX(), me.getY(), Human.class);
+//        if (target != null) {
+//            int originalHealth = target.getHealth();
+//            me.attack(target);
+//            if (target.getHealth() < originalHealth) {
+//                boolean infected = infectNearby(g);
+//                if (infected) return Action.INFECT;
+//            }
+//            return Action.ATTACK;
+//        }
+//        return Action.IDLE;
+//    }
 }

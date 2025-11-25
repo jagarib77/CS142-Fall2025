@@ -12,12 +12,15 @@ import static model.config.SimulationConstants.SEARCH_RADIUS_DEFAULT;
 public abstract class Zombie extends LivingEntity {
     protected double infectionRate = INFECTION_RATE_DEFAULT;
 
-    protected void infectNearby(SimulationGrid grid) {
-        for (LivingEntity le : grid.getNearbyLiving(getX(), getY(), SEARCH_RADIUS_DEFAULT)) {
+    protected boolean infectNearby(SimulationGrid grid) {
+        boolean infectedSomeone = false;
+        for (LivingEntity le : grid.getNearbyLiving(getX(), getY(), 1)) {
             if (le instanceof Human && Math.random() < infectionRate) {
-                Human h = (Human) le;
-                h.infect();
+                ((Human) le).infect();
+                infectedSomeone = true;
             }
         }
+        return infectedSomeone;
     }
+
 }
