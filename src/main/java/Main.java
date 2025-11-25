@@ -1,6 +1,7 @@
 import controller.SimulationController;
 import model.world.SimulationGrid;
 import view.GridPanel;
+import view.StatusPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,20 +21,23 @@ public class Main {
         System.out.println("World created. " + grid.countHumans() + " humans vs " + grid.countZombies() + " zombies.");
         System.out.println(grid);
 
-        GridPanel panel = new GridPanel(grid);
-        SimulationController controller = new SimulationController(grid, panel);
+        GridPanel gridPanel = new GridPanel(grid);
+        StatusPanel statusPanel = new StatusPanel(grid);
+        SimulationController controller = new SimulationController(grid, gridPanel, statusPanel);
 
 
         JFrame frame = new JFrame("Zombie Simulation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        frame.add(panel, BorderLayout.CENTER);
-        frame.add(createControlPanel(controller), BorderLayout.SOUTH);
+        frame.add(gridPanel, BorderLayout.CENTER);
+        frame.add(statusPanel, BorderLayout.EAST); // right-hand column
+        frame.add(createControlPanel(controller), BorderLayout.SOUTH); // optional control panel
 
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
     }
 
     private static JPanel createControlPanel(SimulationController controller) {

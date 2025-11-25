@@ -2,6 +2,7 @@ package controller;
 
 import model.world.SimulationGrid;
 import view.GridPanel;
+import view.StatusPanel;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
@@ -11,16 +12,18 @@ public class SimulationController {
     private final Timer timer;
     private int delayMs = 180;  // Default speed
 
-    public SimulationController(final SimulationGrid grid, final GridPanel view) {
+    public SimulationController(SimulationGrid grid, GridPanel gridPanel, StatusPanel statusPanel) {
         timer = new Timer(delayMs, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 grid.update();
-                view.repaint();
+                gridPanel.repaint();
+                statusPanel.repaint(); // keep counts updated
             }
         });
         timer.start();
     }
+
 
     public void setSpeed(int delayMs) {
         this.delayMs = delayMs;

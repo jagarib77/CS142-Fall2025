@@ -327,4 +327,17 @@ public final class SimulationGrid {
     public int getWidth() {
         return width;
     }
+
+    public int countEntitiesBySymbol(char symbol) {
+        int count = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Entity e = grid[y][x];
+                if (e != null && e.getSymbol() == symbol && e.isPresent()) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 }
