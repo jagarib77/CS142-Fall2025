@@ -1,6 +1,8 @@
 // CS 142
-// AUTHOR: AFNAN
+// AUTHOR: Afnan Ali
 // 11/24/25
+
+package OceanPath;
 
 public class Item {
 
@@ -25,20 +27,10 @@ public class Item {
             return;
         }
 
-        int newRow = y + d.dx;
-        int newCol = x + d.dy;
+        int newRow = y + d.dy;
+        int newCol = x + d.dx;
 
         x = newCol;
         y = newRow;
     }
-
-    public void setPos (int x, int y){
-        this.x = x;
-        this.y = y;
-
-    }
-
-
-
 }
-
