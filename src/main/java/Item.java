@@ -1,3 +1,7 @@
+// CS 142
+// AUTHOR: AFNAN
+// 11/24/25
+
 public class Item {
 
     private int x;
@@ -37,3 +41,4 @@ public class Item {
 
 
 }
+
