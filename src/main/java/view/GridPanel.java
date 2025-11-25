@@ -1,6 +1,7 @@
 package view;
 
 import model.*;
+import model.config.EntityVisual;
 import model.entities.*;
 import model.world.SimulationGrid;
 
@@ -9,6 +10,9 @@ import java.awt.*;
 
 import static model.config.SimulationConstants.*;
 
+/**
+ * Displays the 2D grid of the simulation.
+ */
 public class GridPanel extends JPanel {
     private final SimulationGrid grid;
 
@@ -25,14 +29,20 @@ public class GridPanel extends JPanel {
         for (int y = 0; y < grid.getHeight(); y++) {
             for (int x = 0; x < grid.getWidth(); x++) {
                 Entity e = grid.get(x, y);
-                char c = e == null ? '.' : e.getSymbol();
+                char symbol = EntityVisual.EMPTY.getSymbol();
 
-                g.setColor(getColor(c));
+                if (e != null) {
+                    symbol = e.getSymbol();
+                }
+
+                EntityVisual visual = EntityVisual.fromChar(symbol);
+
+                g.setColor(visual.getColor());
                 g.fillRect(x * CELL_SIZE, y * CELL_SIZE,
                         CELL_SIZE, CELL_SIZE);
 
                 g.setColor(Color.WHITE);
-                g.drawString(String.valueOf(c),
+                g.drawString(String.valueOf(symbol),
                         x * CELL_SIZE + STRING_X_OFFSET,
                         y * CELL_SIZE + STRING_Y_OFFSET);
             }
@@ -46,19 +56,5 @@ public class GridPanel extends JPanel {
             g.setFont(GAME_OVER_FONT);
             g.drawString("GAME OVER", GAME_OVER_X, GAME_OVER_Y);
         }
-    }
-
-    private Color getColor(char c) {
-        return switch (c) {
-            case CIVILIAN_CHAR -> COLOR_CIVILIAN;
-            case INFECTION_CHAR -> COLOR_INFECTION;
-            case SOLDIER_CHAR -> COLOR_SOLDIER;
-            case COMMON_ZOMBIE_CHAR -> COLOR_COMMON_ZOMBIE;
-            case ELITE_ZOMBIE_CHAR -> COLOR_ELITE_ZOMBIE;
-            case WEAPON_CHAR -> COLOR_WEAPON;
-            case ARMOR_CHAR -> COLOR_ARMOR;
-            case MEDKIT_CHAR -> COLOR_MEDKIT;
-            default -> COLOR_DEFAULT;
-        };
     }
 }

@@ -3,8 +3,7 @@ package model.config;
 import java.awt.*;
 
 /**
- * Single source of truth for ALL game balance values.
- * No magic numbers allowed anywhere in the codebase.
+ * Constants for Zombie Apocalypse Simulation
  */
 public final class SimulationConstants {
     private SimulationConstants() {} // Prevent instantiation
@@ -13,7 +12,7 @@ public final class SimulationConstants {
     public static final int CELL_SIZE = 12;
 
     // Status Panel
-    public static final int STATUS_PANEL_WIDTH = 200;
+    public static final int STATUS_PANEL_WIDTH = 170;
 
     // Font
     public static final Font GAME_OVER_FONT = new Font("Arial", Font.BOLD, 50);
@@ -56,6 +55,11 @@ public final class SimulationConstants {
     // Infection
     public static final int INFECTION_TURNS = 3;
     public static final char INFECTION_CHAR = 'I';
+    public static final String INFECTION_STRING = "Infection";
+
+    // Empty
+    public static final char EMPTY_CHAR = '.';
+    public static final String EMPTY_STRING = "Empty";
 
     // Equipment
     public static final int WEAPON_DAMAGE_BONUS = 20;
