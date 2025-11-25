@@ -6,6 +6,7 @@ import model.behavior.Behavior;
 import static model.config.SimulationConstants.*;
 import model.world.SimulationGrid;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,8 +24,9 @@ public class CommonZombie extends Zombie {
         return COMMON_ZOMBIE_CHAR;
     }
 
-    @Override protected List<Behavior> getBehaviors() {
-        return List.of(
+    @Override
+    protected List<Behavior> getBehaviors() {
+        return Arrays.asList(
                 this::repelRivals,
                 this::followLeader,
                 this::hunt,
