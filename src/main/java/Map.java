@@ -14,12 +14,8 @@ public class Map {
 
     public Map(String filename) throws FileNotFoundException {
         
-        try {
-            ArrayList<String> Rows = readLines(filename);
-        } 
-        catch (FileNotFoundException e) {
-            System.out.println("File Not Found")
-        }
+        ArrayList<String> Rows = readLines(filename);
+        
         this.row = Rows.size();
         this.col = Rows.get(0).split(", ").length;
 
@@ -51,7 +47,12 @@ public class Map {
 
     public static ArrayList<String> readLines(String fileName) throws FileNotFoundException {
         ArrayList<String> lines = new ArrayList<String>();
-        Scanner input = new Scanner(new File(fileName));
+        try {
+            Scanner input = new Scanner(new File(fileName));
+        } 
+        catch (FileNotFoundException e) {
+            System.out.println("File Not Found");
+        }
         while (input.hasNextLine()) {
             String line = input.nextLine().trim();
             if (line.length() > 0) {
@@ -61,4 +62,5 @@ public class Map {
         return lines;
     }
 }
+
 
