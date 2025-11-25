@@ -1,8 +1,3 @@
-/*
-CS142
-Author : Thaknin Hor
-Date : 11/25/2025
-*/
 package OceanPath;
 
 import javax.swing.*;
@@ -14,7 +9,7 @@ public class OceanGUI extends JPanel {
 
     private final Map map;
     private final List<Item> items = new ArrayList<>();
-    private final int cellSize = 40;
+    private final int cellSize = 20;
     private Timer timer;
 
     public OceanGUI(Map map, List<Item> items) {
@@ -43,18 +38,15 @@ public class OceanGUI extends JPanel {
 
         for (int r = 0; r < map.getY(); r++) {
             for (int c = 0; c < map.getX(); c++) {
-                int x = r * cellSize;
+                int x = c * cellSize;
                 int y = r * cellSize;
 
                 g2.setColor(Color.LIGHT_GRAY);
                 g2.fillRect(x, y, cellSize, cellSize);
 
                 Location loc = map.getLocation(c, r);
-                if (loc != null) {
-                    List<Direction> dirs = loc.getDirections();
-                    Direction d = loc.chooseRandomDirection();
-                    drawArrow(g2, x, y, d);
-                }
+                Direction d = loc.getDirection();
+//                drawArrow(g2, x, y, d);
             }
         }
 
@@ -72,8 +64,8 @@ public class OceanGUI extends JPanel {
         int cx = cellX + cellSize / 2;
         int cy = cellY + cellSize / 2;
         int len = cellSize / 2 - 4;
-        int tx = cx + d.dy * len;
-        int ty = cy + d.dx * len;
+        int tx = cx + d.dx * len;
+        int ty = cy + d.dy * len;
 
         g2.setColor(Color.BLUE);
         g2.setStroke(new BasicStroke(2));
