@@ -14,6 +14,7 @@ import static model.config.SimulationConstants.*;
  * Displays the 2D grid of the simulation.
  */
 public class GridPanel extends JPanel {
+
     private final SimulationGrid grid;
 
     public GridPanel(SimulationGrid grid) {
@@ -26,35 +27,57 @@ public class GridPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (int y = 0; y < grid.getHeight(); y++) {
-            for (int x = 0; x < grid.getWidth(); x++) {
-                Entity e = grid.get(x, y);
-                char symbol = EntityVisual.EMPTY.getSymbol();
-
-                if (e != null) {
-                    symbol = e.getSymbol();
-                }
-
-                EntityVisual visual = EntityVisual.fromChar(symbol);
-
-                g.setColor(visual.getColor());
-                g.fillRect(x * CELL_SIZE, y * CELL_SIZE,
-                        CELL_SIZE, CELL_SIZE);
-
-                g.setColor(Color.WHITE);
-                g.drawString(String.valueOf(symbol),
-                        x * CELL_SIZE + STRING_X_OFFSET,
-                        y * CELL_SIZE + STRING_Y_OFFSET);
-            }
-        }
+        drawGrid(g);
 
         if (grid.isGameOver()) {
-            g.setColor(OVERLAY_COLOR);
-            g.fillRect(0, 0, getWidth(), getHeight());
-
-            g.setColor(Color.WHITE);
-            g.setFont(GAME_OVER_FONT);
-            g.drawString("GAME OVER", GAME_OVER_X, GAME_OVER_Y);
+            drawGameOverOverlay(g);
         }
+    }
+
+    /** Draw all cells and entities on the grid */
+    private void drawGrid(Graphics g) {
+        for (int y = 0; y < grid.getHeight(); y++) {
+            for (int x = 0; x < grid.getWidth(); x++) {
+                drawCell(g, x, y);
+            }
+        }
+    }
+
+    /** Draw a single cell and its symbol */
+    private void drawCell(Graphics g, int x, int y) {
+        Entity e = grid.get(x, y);
+        char symbol = (e != null) ? e.getSymbol() : EntityVisual.EMPTY.getSymbol();
+        EntityVisual visual = EntityVisual.fromChar(symbol);
+
+        g.setColor(visual.getColor());
+        g.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
+        g.setColor(Color.WHITE);
+        g.drawString(String.valueOf(symbol),
+                x * CELL_SIZE + STRING_X_OFFSET,
+                y * CELL_SIZE + STRING_Y_OFFSET);
+    }
+
+    /** Draw a centered GAME OVER overlay */
+    private void drawGameOverOverlay(Graphics g) {
+        g.setColor(OVERLAY_COLOR);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        // Draw centered text
+        g.setColor(Color.WHITE);
+        g.setFont(GAME_OVER_FONT);
+
+        String message = "GAME OVER";
+        if (grid.getWinner() != null) {
+            message = grid.getWinner();
+        }
+        FontMetrics fm = g.getFontMetrics();
+        int textWidth = fm.stringWidth(message);
+        int textHeight = fm.getAscent();
+
+        int x = (getWidth() - textWidth) / 2;
+        int y = (getHeight() + textHeight) / 2;
+
+        g.drawString(message, x, y);
     }
 }

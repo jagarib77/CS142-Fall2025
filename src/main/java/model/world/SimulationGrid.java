@@ -12,13 +12,12 @@ import java.util.*;
  * Acts as the game master: spawns entities, runs turns, removes dead, checks win condition.
  */
 public final class SimulationGrid {
-
     private final Entity[][] grid;
     private final int width;
     private final int height;
-    private final Random random = new Random();
     private boolean gameOver = false;
     private final Random rng = new Random();
+    private String winner = null;
 
     public SimulationGrid() {
         this.width  = WORLD_WIDTH;
@@ -52,8 +51,8 @@ public final class SimulationGrid {
 
     private Cell findEmptyCell() {
         for (int tries = 0; tries < 200; tries++) {
-            int x = random.nextInt(width);
-            int y = random.nextInt(height);
+            int x = rng.nextInt(width);
+            int y = rng.nextInt(height);
             if (grid[y][x] == null) {
                 return new Cell(x, y);
             }
@@ -157,8 +156,8 @@ public final class SimulationGrid {
 
         if (!humansLeft || !zombiesLeft) {
             gameOver = true;
-            String winner = humansLeft ? "HUMANS" : "ZOMBIES";
-            System.out.println("\nGAME OVER! " + winner + " WIN!");
+            winner = humansLeft ? "HUMANS WIN!" : "ZOMBIES WIN!";
+            System.out.println("\nGAME OVER! " + winner);
         }
     }
 
@@ -168,7 +167,7 @@ public final class SimulationGrid {
     }
 
     public void moveRandomly(LivingEntity entity) {
-        Direction dir = Direction.random(random);
+        Direction dir = Direction.random(rng);
         tryMove(entity, entity.getX() + dir.dx(), entity.getY() + dir.dy());
     }
 
@@ -326,6 +325,10 @@ public final class SimulationGrid {
 
     public int getWidth() {
         return width;
+    }
+
+    public String getWinner() {
+        return winner;
     }
 
     public int countEntitiesBySymbol(char symbol) {

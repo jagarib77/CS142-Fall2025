@@ -41,7 +41,7 @@ public final class SimulationConstants {
     public static final int GAME_OVER_Y = 200;
 
     // World
-    public static final int WORLD_WIDTH = 70;
+    public static final int WORLD_WIDTH = 40;
     public static final int WORLD_HEIGHT = 40;
 
     // Search
