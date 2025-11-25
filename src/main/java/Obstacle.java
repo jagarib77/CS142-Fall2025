@@ -29,24 +29,14 @@ public abstract class Obstacle extends SimulationObject {
     }
     
     public boolean isOverlapped(Vector2D point) {
-        double left = point.x - size.x / 2;
-        if (point.x < left) {
-            return false;
-        }
-        double right = point.x + size.x / 2;
-        if (point.x > right) {
-            return false;
-        }
-        double top = point.y - size.y / 2;
-        if (point.y < top) {
-            return false;
-        }
-        double bottom = point.y + size.y / 2;
-        if (point.y > bottom) {
-            return false;
-        }
-        return true;
-    }
+    double left = position.x - size.x / 2;
+    double right = position.x + size.x / 2;
+    double top = position.y - size.y / 2;
+    double bottom = position.y + size.y / 2;
+    
+    return point.x >= left && point.x <= right && 
+           point.y >= top && point.y <= bottom;
+}
     
     public Vector2D getSize() {
         return size;
