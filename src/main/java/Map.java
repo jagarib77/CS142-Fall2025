@@ -12,22 +12,24 @@ import java.io.*;
 
 public class Map {
 
-    private int rows;
-    private int cols;
+    private int x;
+    private int y;
     private Location[][] grid;
 
     public Map(String filename) throws FileNotFoundException {
         ArrayList<String> lines = readLines(filename);
 
-        this.rows = lines.size();
-        this.cols = lines.get(0).split(", ").length;
+        this.y = lines.size();
+        System.out.println(y);
+        this.x = lines.get(0).split(", ").length;
+        System.out.println(x);
 
-        grid = new Location[rows][cols];
+        grid = new Location[y][x];
 
-        for (int r = 0; r < rows - 1; r++) {
-            String[] dirs = lines.get(r).split(", ");
+        for (int r = 0; r < y; r++) {
+            String[] dirs = lines.get(r).trim().split("\\s*,\\s*");
 
-            for (int c = 0; c < cols - 1; c++) {
+            for (int c = 0; c < dirs.length; c++) {
 
                 Location loc = new Location(c, r);
 
@@ -40,6 +42,7 @@ public class Map {
                     case "SW": loc.addDirection(Direction.SW); break;
                     case "W": loc.addDirection(Direction.W); break;
                     case "NW": loc.addDirection(Direction.NW); break;
+                    default: loc.addDirection(Direction.C); break;
                 }
 
                 grid[r][c] = loc;
@@ -47,8 +50,24 @@ public class Map {
         }
     }
 
+    public int getX() { return x; }
+    public int getY() { return y; }
+
     public Location getLocation(int x,  int y) {
         return grid[y][x];
+    }
+
+    public void printGrid() {
+        for (Location[] row : grid) {
+            System.out.println();
+            for (Location loc : row) {
+                if (loc != null) {
+                    System.out.print(loc.chooseRandomDirection().toString());
+                } else {
+                    System.out.print(". ");
+                }
+            }
+        }
     }
 
     private static ArrayList<String> readLines(String fileName) throws FileNotFoundException {
@@ -68,6 +87,6 @@ public class Map {
             System.out.println("File " + fileName + " not found.");
         }
         return lines;
-        
+
     }
 }
