@@ -27,7 +27,7 @@ public final class SimulationGrid {
     }
 
     public void spawnInitialWorld() {
-//        spawn(Civilian.class,     SPAWN_CIVILIANS);
+        spawn(Civilian.class,     SPAWN_CIVILIANS);
         spawn(Soldier.class,      SPAWN_SOLDIERS);
         spawn(CommonZombie.class, SPAWN_COMMON_ZOMBIES);
 //        spawn(EliteZombie.class,  SPAWN_ELITES);

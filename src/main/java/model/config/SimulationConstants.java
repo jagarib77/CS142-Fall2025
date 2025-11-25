@@ -44,6 +44,9 @@ public final class SimulationConstants {
     public static final int WORLD_WIDTH = 70;
     public static final int WORLD_HEIGHT = 40;
 
+    // Search
+    public static final int SEARCH_RADIUS_DEFAULT = 1;
+
     // Settlement System
     public static final int SETTLEMENT_MIN_SIZE = 6;
     public static final int SETTLEMENT_FORMATION_RADIUS = 2;
@@ -53,6 +56,7 @@ public final class SimulationConstants {
     public static final int RIVAL_REPEL_RANGE = 8;
 
     // Infection
+    public static final double INFECTION_RATE_DEFAULT = 0.4;
     public static final int INFECTION_TURNS = 3;
     public static final char INFECTION_CHAR = 'I';
     public static final String INFECTION_STRING = "Infection";
