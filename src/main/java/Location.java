@@ -1,21 +1,22 @@
-// Afnan Ali. CS 142. FALL 2025
-// 11/3/2025
-// Location.java
-// Stores a single location with x, y, and elevation
+//CS142
+//Author : Afnan Ali
+//Date : 11/24/2025
+
+package OceanPath;
 
 import java.util.*;
 
 
 public class Location {
     
-    private final int y;
     private final int x;
+    private final int y;
     private final List<Direction> directions = new ArrayList<>();
     private final Random r = new Random();
 
-    public Location(int row, int col){
-        x = col;
-        y = row;
+    public Location(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 
     public int getX(){
@@ -39,17 +40,8 @@ public class Location {
         return new ArrayList<>(directions);
     }
 
-    public Direction choseRandomDirection(){
-        if(directions.isEmpty()){
-            return null;
-        }
+    public Direction chooseRandomDirection(){
+
         return directions.get(r.nextInt(directions.size()));
     }
-
-
-
-
-
 }
-    
-
