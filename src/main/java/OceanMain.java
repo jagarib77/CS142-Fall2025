@@ -1,92 +1,86 @@
 /*
-CS&142
-Author : Thaknin Hor & Afnan Ali
-Date : 11/24/2005
+CS142
+Author : Thaknin Hor
+Date : 11/25/2025
  */
-
 package OceanPath;
 
-
+import javax.swing.*;
+import java.awt.*;
+import java.io.FileNotFoundException;
 import java.util.*;
-import java.io.*;
+import java.util.List;
 
-public class Map {
 
-    private int x;
-    private int y;
-    private Location[][] grid;
+public class OceanMain {
 
-    public Map(String filename) throws FileNotFoundException {
-        ArrayList<String> lines = readLines(filename);
+    public static void main(String[] donuts) throws FileNotFoundException {
+        Random r = new Random();
+        Scanner s = new Scanner(System.in);
+        System.out.print("Current map file: ");
+        String file = s.nextLine();
+        Map map = new Map("C://Users//Dell//IdeaProjects//OceanPath//src//main//java//OceanPath//"+file);
 
-        this.y = lines.size();
-        System.out.println(y);
-        this.x = lines.get(0).split(", ").length;
-        System.out.println(x);
+        map.printGrid();
 
-        grid = new Location[y][x];
+        List<Item> items = new ArrayList<>();
 
-        for (int r = 0; r < y; r++) {
-            String[] dirs = lines.get(r).trim().split("\\s*,\\s*");
-
-            for (int c = 0; c < dirs.length; c++) {
-
-                Location loc = new Location(c, r);
-
-                switch (dirs[c]) {
-                    case "N": loc.addDirection(Direction.N); break;
-                    case "NE": loc.addDirection(Direction.NE); break;
-                    case "E": loc.addDirection(Direction.E); break;
-                    case "SE": loc.addDirection(Direction.SE); break;
-                    case "S": loc.addDirection(Direction.S); break;
-                    case "SW": loc.addDirection(Direction.SW); break;
-                    case "W": loc.addDirection(Direction.W); break;
-                    case "NW": loc.addDirection(Direction.NW); break;
-                    default: loc.addDirection(Direction.C); break;
-                }
-
-                grid[r][c] = loc;
-            }
-        }
-    }
-
-    public int getX() { return x; }
-    public int getY() { return y; }
-
-    public Location getLocation(int x,  int y) {
-        return grid[y][x];
-    }
-
-    public void printGrid() {
-        for (Location[] row : grid) {
+        System.out.println();
+        System.out.println("Pollute The Ocean! ");
+        System.out.println("Do you want to add your own items? Yes / No");
+        String Answer = s.nextLine();
+        if (Answer.equals("Yes")) {
+            System.out.print("How many items do you want to add to? ");
+            int numOfItems = s.nextInt();
             System.out.println();
-            for (Location loc : row) {
-                if (loc != null) {
-                    System.out.print(loc.chooseRandomDirection().toString());
-                } else {
-                    System.out.print(". ");
-                }
+
+            for (int i = 1; i <= numOfItems; i++) {
+                System.out.print("Item " + i + " Start X = ");
+                int startX = s.nextInt();
+                System.out.println();
+                System.out.print("Item " + i + " Start Y = ");
+                int startY = s.nextInt();
+                System.out.println();
+                items.add(new Item(startX, startY));
             }
+        } else {
+            System.out.print("How many random items do you want to add to? ");
+            int numOfItems = s.nextInt();
+            items.addAll(creatRandomItems(numOfItems, map.getX(), map.getY(), r));
         }
+
+        OceanGUI panel = new OceanGUI(map, items);
+        JFrame frame = new JFrame("Items In Ocean Currents Simulation");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel controls = new JPanel();
+        JButton start = new JButton("Start");
+        JButton stop = new JButton("Stop");
+        JButton step = new JButton("Step");
+
+        start.addActionListener(e -> panel.start());
+        stop.addActionListener(e -> panel.stop());
+        step.addActionListener(e -> panel.step());
+
+        controls.add(start);
+        controls.add(stop);
+        controls.add(step);
+
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().add(panel, BorderLayout.CENTER);
+        frame.getContentPane().add(controls, BorderLayout.SOUTH);
+
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
     }
 
-    private static ArrayList<String> readLines(String fileName) throws FileNotFoundException {
-        ArrayList<String> lines = new ArrayList<>();
-        try {
-            Scanner input = new Scanner(new File(fileName));
-            while (input.hasNextLine()) {
-                String line = input.nextLine().trim();
-                if (line.length() > 0) {
-                    lines.add(line);
-                }
-            }
-
-            input.close();
+    public static List<Item> creatRandomItems(int numOfItems, int maxX, int maxY, Random r){
+        List<Item> items = new ArrayList<>();
+        for (int i = 0; i < numOfItems; i++){
+            items.add(new Item(r.nextInt(maxX - 1), r.nextInt(maxY - 1)));
         }
-        catch (FileNotFoundException e) {
-            System.out.println("File " + fileName + " not found.");
-        }
-        return lines;
-
+        return items;
     }
 }
