@@ -1,7 +1,8 @@
 package view;
 
 import util.display.EntityVisual;
-import model.world.SimulationGrid;
+import model.world.Simulation;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,9 +12,9 @@ import static util.config.SimulationConstants.*;
  * Displays entity counts and stats on the side panel.
  */
 public class StatusPanel extends JPanel {
-    private final SimulationGrid grid;
+    private final Simulation grid;
 
-    public StatusPanel(SimulationGrid grid) {
+    public StatusPanel(Simulation grid) {
         this.grid = grid;
         setPreferredSize(new Dimension(STATUS_PANEL_WIDTH, grid.getHeight() * CELL_SIZE));
         setBackground(Color.DARK_GRAY);

@@ -1,7 +1,7 @@
 package view;
 
 import controller.SimulationController;
-import model.world.SimulationGrid;
+import model.world.Simulation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ public class SimulationWindow {
     }
 
     public static void startNewSimulation() {
-        SimulationGrid grid = new SimulationGrid();
+        Simulation grid = new Simulation();
         grid.spawnInitialWorld();
 
         System.out.println("=== ZOMBIE APOCALYPSE — SANG VO EDITION ===");

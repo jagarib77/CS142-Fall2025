@@ -1,6 +1,6 @@
 package controller;
 
-import model.world.SimulationGrid;
+import model.world.Simulation;
 import view.GridPanel;
 import view.StatusPanel;
 
@@ -12,7 +12,7 @@ public class SimulationController {
     private final Timer timer;
     private int delayMs = 180;
 
-    public SimulationController(SimulationGrid grid, GridPanel gridPanel, StatusPanel statusPanel) {
+    public SimulationController(Simulation grid, GridPanel gridPanel, StatusPanel statusPanel) {
         timer = new Timer(delayMs, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -34,9 +34,19 @@ public class SimulationController {
         timer.setDelay(delayMs);
     }
 
-    public void faster() { setSpeed(Math.max(50, delayMs - 50)); }
-    public void slower() { setSpeed(delayMs + 50); }
+    public void faster() {
+        setSpeed(Math.max(50, delayMs - 50));
+    }
 
-    public void stopTimer() { timer.stop(); }
-    public void startTimer() { timer.start(); }
+    public void slower() {
+        setSpeed(delayMs + 50);
+    }
+
+    public void stopTimer() {
+        timer.stop();
+    }
+
+    public void startTimer() {
+        timer.start();
+    }
 }

@@ -21,4 +21,6 @@ public abstract class Entity {
     }
 
     public abstract char getSymbol();
-    public abstract boolean isPresent();}
+
+    public abstract boolean isPresent();
+}

@@ -1,7 +1,7 @@
 package model.entities;
 
 import model.LivingEntity;
-import model.world.SimulationGrid;
+import model.world.Simulation;
 
 import static util.config.SimulationConstants.INFECTION_RATE_DEFAULT;
 
@@ -11,7 +11,7 @@ import static util.config.SimulationConstants.INFECTION_RATE_DEFAULT;
 public abstract class Zombie extends LivingEntity {
     protected double infectionRate = INFECTION_RATE_DEFAULT;
 
-    protected boolean infectNearby(SimulationGrid grid) {
+    protected boolean infectNearby(Simulation grid) {
         boolean infectedSomeone = false;
         for (LivingEntity le : grid.getNearbyLiving(getX(), getY(), 1)) {
             if (le instanceof Human && Math.random() < infectionRate) {

@@ -6,7 +6,8 @@ import java.awt.*;
  * Constants for Zombie Apocalypse Simulation
  */
 public final class SimulationConstants {
-    private SimulationConstants() {} // Prevent instantiation
+    private SimulationConstants() {
+    } // Prevent instantiation
 
     // Grid
     public static final int CELL_SIZE = 12;

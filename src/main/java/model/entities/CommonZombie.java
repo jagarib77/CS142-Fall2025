@@ -3,7 +3,7 @@ package model.entities;
 import model.LivingEntity;
 import model.behavior.Action;
 import model.behavior.Behavior;
-import model.world.SimulationGrid;
+import model.world.Simulation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +35,7 @@ public class CommonZombie extends Zombie {
         );
     }
 
-    private Action repelRivals(LivingEntity me, SimulationGrid g) {
+    private Action repelRivals(LivingEntity me, Simulation g) {
         EliteZombie myLeader = g.findNearestElite(me.getX(), me.getY());
         EliteZombie rival = g.findNearest(me.getX(), me.getY(), EliteZombie.class);
         if (rival != null && rival != myLeader && g.distanceBetween(me, rival) <= RIVAL_REPEL_RANGE) {
@@ -46,7 +46,7 @@ public class CommonZombie extends Zombie {
         return Action.MOVE;
     }
 
-    private Action followLeader(LivingEntity me, SimulationGrid g) {
+    private Action followLeader(LivingEntity me, Simulation g) {
         EliteZombie leader = g.findNearestElite(me.getX(), me.getY());
         if (leader != null && g.distanceBetween(me, leader) > HORDE_FOLLOW_RANGE) {
             g.moveToward(leader.getX(), leader.getY(), me);
@@ -54,17 +54,17 @@ public class CommonZombie extends Zombie {
         return Action.MOVE;
     }
 
-    private Action hunt(LivingEntity me, SimulationGrid g) {
+    private Action hunt(LivingEntity me, Simulation g) {
         g.moveTowardNearest(me, Human.class);
         return Action.MOVE;
     }
 
-    private Action infect(LivingEntity me, SimulationGrid g) {
+    private Action infect(LivingEntity me, Simulation g) {
         infectNearby(g);
         return Action.INFECT;
     }
 
-    private Action attackOrInfect(LivingEntity me, SimulationGrid g) {
+    private Action attackOrInfect(LivingEntity me, Simulation g) {
         Human target = g.findNearest(me.getX(), me.getY(), Human.class);
         if (target != null) {
             int originalHealth = target.getHealth();

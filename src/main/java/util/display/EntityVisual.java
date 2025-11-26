@@ -29,9 +29,17 @@ public enum EntityVisual {
         this.displayName = displayName;
     }
 
-    public char getSymbol() { return symbol; }
-    public Color getColor() { return color; }
-    public String getDisplayName() { return displayName; }
+    public char getSymbol() {
+        return symbol;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 
     public static EntityVisual fromChar(char c) {
         for (EntityVisual e : values()) {

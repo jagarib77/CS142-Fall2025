@@ -12,6 +12,7 @@ public class EliteZombie extends Zombie {
         baseDamage = ELITE_ZOMBIE_DAMAGE;
         baseSpeed = ELITE_ZOMBIE_SPEED;
     }
+
     @Override
     public char getSymbol() {
         return ELITE_ZOMBIE_CHAR;

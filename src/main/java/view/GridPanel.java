@@ -2,7 +2,7 @@ package view;
 
 import model.*;
 import util.display.EntityVisual;
-import model.world.SimulationGrid;
+import model.world.Simulation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +14,9 @@ import static util.config.SimulationConstants.*;
  */
 public class GridPanel extends JPanel {
 
-    private final SimulationGrid grid;
+    private final Simulation grid;
 
-    public GridPanel(SimulationGrid grid) {
+    public GridPanel(Simulation grid) {
         this.grid = grid;
         setPreferredSize(new Dimension(grid.getWidth() * CELL_SIZE, grid.getHeight() * CELL_SIZE));
         setBackground(Color.BLACK);
@@ -33,7 +33,9 @@ public class GridPanel extends JPanel {
         }
     }
 
-    /** Draw all cells and entities on the grid */
+    /**
+     * Draw all cells and entities on the grid
+     */
     private void drawGrid(Graphics g) {
         for (int y = 0; y < grid.getHeight(); y++) {
             for (int x = 0; x < grid.getWidth(); x++) {
@@ -42,7 +44,9 @@ public class GridPanel extends JPanel {
         }
     }
 
-    /** Draw a single cell and its symbol */
+    /**
+     * Draw a single cell and its symbol
+     */
     private void drawCell(Graphics g, int x, int y) {
         Entity e = grid.get(x, y);
         char symbol = (e != null) ? e.getSymbol() : EntityVisual.EMPTY.getSymbol();
@@ -57,7 +61,9 @@ public class GridPanel extends JPanel {
                 y * CELL_SIZE + STRING_Y_OFFSET);
     }
 
-    /** Draw a centered GAME OVER overlay */
+    /**
+     * Draw a centered GAME OVER overlay
+     */
     private void drawGameOverOverlay(Graphics g) {
         g.setColor(OVERLAY_COLOR);
         g.fillRect(0, 0, getWidth(), getHeight());

@@ -3,7 +3,7 @@ package model.entities;
 import model.Entity;
 import model.LivingEntity;
 import model.items.Equipment;
-import model.world.SimulationGrid;
+import model.world.Simulation;
 
 import static util.config.SimulationConstants.*;
 
@@ -41,7 +41,7 @@ public abstract class Human extends LivingEntity {
         return infected && infectionTimer <= 0;
     }
 
-    protected boolean isInSettlement(SimulationGrid grid) {
+    protected boolean isInSettlement(Simulation grid) {
         int nearbyHumans = 1;
 
         for (int dy = -SETTLEMENT_FORMATION_RADIUS; dy <= SETTLEMENT_FORMATION_RADIUS; dy++) {
@@ -63,7 +63,7 @@ public abstract class Human extends LivingEntity {
         return nearbyHumans >= SETTLEMENT_MIN_SIZE;
     }
 
-    protected void moveToFormSettlement(SimulationGrid grid) {
+    protected void moveToFormSettlement(Simulation grid) {
         if (isInSettlement(grid)) {
             return;
         }
@@ -75,7 +75,7 @@ public abstract class Human extends LivingEntity {
     }
 
     // ———————— ITEM PICKUP (Shared by Civilian & Soldier) ————————
-    protected void tryPickup(SimulationGrid grid) {
+    protected void tryPickup(Simulation grid) {
         for (int dy = -1; dy <= 1; dy++) {
             for (int dx = -1; dx <= 1; dx++) {
                 int nx = x + dx, ny = y + dy;

@@ -2,7 +2,7 @@ package model;
 
 import model.behavior.Action;
 import model.behavior.Behavior;
-import model.world.SimulationGrid;
+import model.world.Simulation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +40,11 @@ public abstract class LivingEntity extends Entity {
     public void addDamageBonus(int bonus) {
         damageBonus += bonus;
     }
+
     public void addDefenseBonus(int bonus) {
         defenseBonus += bonus;
     }
+
     public void addSpeedBonus(int bonus) {
         speedBonus += bonus;
     }
@@ -54,6 +56,7 @@ public abstract class LivingEntity extends Entity {
     public int getTieBreaker() {
         return tieBreaker;
     }
+
     public void setTieBreaker(int tieBreaker) {
         this.tieBreaker = tieBreaker;
     }
@@ -86,7 +89,7 @@ public abstract class LivingEntity extends Entity {
         health = 0;
     }
 
-    public final void act(SimulationGrid grid) {
+    public final void act(Simulation grid) {
         if (!isPresent()) return;
         for (Behavior b : getBehaviors()) {
             Action result = b.execute(this, grid);
@@ -94,5 +97,7 @@ public abstract class LivingEntity extends Entity {
         }
     }
 
-    protected List<Behavior> getBehaviors() { return new ArrayList<>(); }
+    protected List<Behavior> getBehaviors() {
+        return new ArrayList<>();
+    }
 }

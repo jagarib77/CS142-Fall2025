@@ -12,7 +12,9 @@ public class Cell {
         this.y = y;
     }
 
-    /** Returns a new Cell moved in the given direction */
+    /**
+     * Returns a new Cell moved in the given direction
+     */
     public Cell move(Direction direction) {
         return new Cell(x + direction.dx(), y + direction.dy());
     }

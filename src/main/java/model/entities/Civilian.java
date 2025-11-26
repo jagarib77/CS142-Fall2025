@@ -4,12 +4,12 @@ import model.LivingEntity;
 import model.behavior.Action;
 import model.behavior.Behavior;
 import util.config.SimulationConstants;
-import model.world.SimulationGrid;
+import model.world.Simulation;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Civilian extends Human{
+public class Civilian extends Human {
     public Civilian() {
         super(SimulationConstants.CIVILIAN_CHAR);
         maxHealth = SimulationConstants.CIVILIAN_HEALTH;
@@ -28,15 +28,18 @@ public class Civilian extends Human{
         );
     }
 
-    private Action pickup(LivingEntity me, SimulationGrid g) {
-        tryPickup(g); return Action.PICKUP;
+    private Action pickup(LivingEntity me, Simulation g) {
+        tryPickup(g);
+        return Action.PICKUP;
     }
 
-    private Action formSettlement(LivingEntity me, SimulationGrid g) {
-        moveToFormSettlement(g); return Action.GROUP;
+    private Action formSettlement(LivingEntity me, Simulation g) {
+        moveToFormSettlement(g);
+        return Action.GROUP;
     }
 
-    private Action infectionCheck(LivingEntity me, SimulationGrid g) {
-        decrementInfectionTimer(); return Action.IDLE;
+    private Action infectionCheck(LivingEntity me, Simulation g) {
+        decrementInfectionTimer();
+        return Action.IDLE;
     }
 }

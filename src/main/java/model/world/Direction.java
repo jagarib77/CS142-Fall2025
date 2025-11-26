@@ -22,6 +22,7 @@ public enum Direction {
     public int dy() {
         return dy;
     }
+
     public int dx() {
         return dx;
     }
@@ -35,9 +36,9 @@ public enum Direction {
         int dx = Integer.signum(toX - fromX);
 
         if (dy == -1) return UP;
-        if (dy ==  1) return DOWN;
+        if (dy == 1) return DOWN;
         if (dx == -1) return LEFT;
-        if (dx ==  1) return RIGHT;
+        if (dx == 1) return RIGHT;
 
         return UP;
     }
