@@ -1,6 +1,5 @@
 package model.entities;
 
-import model.LivingEntity;
 import model.world.Simulation;
 
 import static util.config.SimulationConstants.INFECTION_RATE_DEFAULT;

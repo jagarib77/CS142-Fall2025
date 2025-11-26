@@ -1,7 +1,7 @@
-package model;
+package model.entities;
 
-import model.behavior.Action;
-import model.behavior.Behavior;
+import model.entities.behavior.Action;
+import model.entities.behavior.Behavior;
 import model.world.Simulation;
 
 import java.util.ArrayList;

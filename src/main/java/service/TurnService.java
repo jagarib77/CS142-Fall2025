@@ -1,7 +1,7 @@
 package service;
 
-import model.Entity;
-import model.LivingEntity;
+import model.entities.Entity;
+import model.entities.LivingEntity;
 import model.entities.*;
 import model.world.Simulation;
 import model.world.WorldGrid;

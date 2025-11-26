@@ -1,7 +1,7 @@
 package model.world;
 
-import model.Entity;
-import model.LivingEntity;
+import model.entities.Entity;
+import model.entities.LivingEntity;
 import model.entities.EliteZombie;
 import service.GameStateService;
 import service.MovementService;

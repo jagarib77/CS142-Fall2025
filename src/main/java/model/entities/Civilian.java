@@ -1,8 +1,7 @@
 package model.entities;
 
-import model.LivingEntity;
-import model.behavior.Action;
-import model.behavior.Behavior;
+import model.entities.behavior.Action;
+import model.entities.behavior.Behavior;
 import util.config.SimulationConstants;
 import model.world.Simulation;
 

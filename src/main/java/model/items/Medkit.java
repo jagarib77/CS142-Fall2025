@@ -1,6 +1,6 @@
 package model.items;
 
-import model.LivingEntity;
+import model.entities.LivingEntity;
 import util.config.SimulationConstants;
 
 /**

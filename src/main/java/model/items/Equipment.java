@@ -1,7 +1,7 @@
 package model.items;
 
-import model.LivingEntity;
-import model.NonLivingEntity;
+import model.entities.LivingEntity;
+import model.entities.NonLivingEntity;
 import model.world.Simulation;
 
 /**

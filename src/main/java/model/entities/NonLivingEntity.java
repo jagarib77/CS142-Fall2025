@@ -1,4 +1,4 @@
-package model;
+package model.entities;
 
 /**
  * Base class for non-living objects (items).

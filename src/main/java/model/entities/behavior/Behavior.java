@@ -1,6 +1,6 @@
-package model.behavior;
+package model.entities.behavior;
 
-import model.LivingEntity;
+import model.entities.LivingEntity;
 import model.world.Simulation;
 
 /**

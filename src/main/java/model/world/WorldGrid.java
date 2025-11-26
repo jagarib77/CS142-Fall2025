@@ -1,6 +1,6 @@
 package model.world;
 
-import model.Entity;
+import model.entities.Entity;
 import util.config.SimulationConstants;
 
 public class WorldGrid {

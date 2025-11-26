@@ -1,7 +1,5 @@
 package model.entities;
 
-import model.Entity;
-import model.LivingEntity;
 import model.items.Equipment;
 import model.world.Simulation;
 

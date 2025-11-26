@@ -1,6 +1,6 @@
 package view;
 
-import model.*;
+import model.entities.Entity;
 import util.display.EntityVisual;
 import model.world.Simulation;
 

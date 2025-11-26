@@ -1,4 +1,4 @@
-package model.behavior;
+package model.entities.behavior;
 
 /**
  * Possible outcomes of a behavior execution.
