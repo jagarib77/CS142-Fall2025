@@ -4,8 +4,6 @@ import controller.SimulationController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ControlPanel {
 
@@ -24,39 +22,17 @@ public class ControlPanel {
         controls.add(slowerBtn);
         controls.add(restartBtn);
 
-        startBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                controller.startTimer();
-            }
-        });
+        startBtn.addActionListener(e -> controller.startTimer());
+        stopBtn.addActionListener(e -> controller.stopTimer());
+        fasterBtn.addActionListener(e -> controller.faster());
+        slowerBtn.addActionListener(e -> controller.slower());
+        restartBtn.addActionListener(e -> {
+            controller.stopTimer();
 
-        stopBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                controller.stopTimer();
-            }
-        });
+            Frame frame = (JFrame) SwingUtilities.getWindowAncestor(restartBtn);
+            frame.dispose();
 
-        fasterBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                controller.faster();
-            }
-        });
-
-        slowerBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                controller.slower();
-            }
-        });
-
-        restartBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                controller.stopTimer();
-
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(restartBtn);
-                frame.dispose();
-
-                SimulationWindow.startNewSimulation();
-            }
+            SimulationWindow.startNewSimulation();
         });
 
         return controls;
