@@ -1,13 +1,11 @@
 package view;
 
-import model.config.EntityVisual;
+import util.display.EntityVisual;
 import model.world.SimulationGrid;
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import static model.config.SimulationConstants.*;
+import static util.config.SimulationConstants.*;
 
 /**
  * Displays entity counts and stats on the side panel.

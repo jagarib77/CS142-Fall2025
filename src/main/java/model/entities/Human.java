@@ -2,9 +2,10 @@ package model.entities;
 
 import model.Entity;
 import model.LivingEntity;
-import static model.config.SimulationConstants.*;
 import model.items.Equipment;
 import model.world.SimulationGrid;
+
+import static util.config.SimulationConstants.*;
 
 /**
  * Base class for humans with infection and settlement behavior.

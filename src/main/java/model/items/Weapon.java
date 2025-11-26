@@ -1,7 +1,7 @@
 package model.items;
 
 import model.LivingEntity;
-import model.config.SimulationConstants;
+import util.config.SimulationConstants;
 
 /**
  * Weapon — increases damage, slows movement.

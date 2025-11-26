@@ -1,11 +1,12 @@
 package model.world;
 
 import model.*;
-import static model.config.SimulationConstants.*;
 import model.entities.*;
 import model.items.*;
 
 import java.util.*;
+
+import static util.config.SimulationConstants.*;
 
 /**
  * The game world — a 70×40 grid that holds all entities.

@@ -1,7 +1,7 @@
 package model.entities;
 
-import static model.config.SimulationConstants.*;
 
+import static util.config.SimulationConstants.*;
 
 /**
  * Elite zombie that leads a permanent, independent horde.

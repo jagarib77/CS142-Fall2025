@@ -1,14 +1,13 @@
 package view;
 
 import model.*;
-import model.config.EntityVisual;
-import model.entities.*;
+import util.display.EntityVisual;
 import model.world.SimulationGrid;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static model.config.SimulationConstants.*;
+import static util.config.SimulationConstants.*;
 
 /**
  * Displays the 2D grid of the simulation.

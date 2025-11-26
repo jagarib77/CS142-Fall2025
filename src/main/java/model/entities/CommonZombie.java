@@ -3,11 +3,12 @@ package model.entities;
 import model.LivingEntity;
 import model.behavior.Action;
 import model.behavior.Behavior;
-import static model.config.SimulationConstants.*;
 import model.world.SimulationGrid;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static util.config.SimulationConstants.*;
 
 /**
  * Follows its Elite leader. Repels rival hordes. Never merges.

@@ -3,8 +3,7 @@ package model.entities;
 import model.LivingEntity;
 import model.world.SimulationGrid;
 
-import static model.config.SimulationConstants.INFECTION_RATE_DEFAULT;
-import static model.config.SimulationConstants.SEARCH_RADIUS_DEFAULT;
+import static util.config.SimulationConstants.INFECTION_RATE_DEFAULT;
 
 /**
  * Base class for zombies with infection spread.

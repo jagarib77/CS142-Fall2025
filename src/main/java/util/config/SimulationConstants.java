@@ -1,4 +1,4 @@
-package model.config;
+package util.config;
 
 import java.awt.*;
 

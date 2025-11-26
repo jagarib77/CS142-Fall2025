@@ -1,8 +1,8 @@
-package model.config;
+package util.display;
 
 import java.awt.Color;
 
-import static model.config.SimulationConstants.*;
+import static util.config.SimulationConstants.*;
 
 /**
  * Enum to map entity symbols to their colors and display names.

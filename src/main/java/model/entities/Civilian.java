@@ -3,7 +3,7 @@ package model.entities;
 import model.LivingEntity;
 import model.behavior.Action;
 import model.behavior.Behavior;
-import model.config.SimulationConstants;
+import util.config.SimulationConstants;
 import model.world.SimulationGrid;
 
 import java.util.Arrays;
