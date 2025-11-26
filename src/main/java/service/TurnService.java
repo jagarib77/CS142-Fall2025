@@ -3,6 +3,7 @@ package service;
 import model.entities.Entity;
 import model.entities.LivingEntity;
 import model.entities.*;
+import model.world.Cell;
 import model.world.Simulation;
 import model.world.WorldGrid;
 
@@ -58,7 +59,7 @@ public class TurnService {
                 if (e instanceof Human && ((Human) e).shouldBecomeZombie()) {
                     Human h = (Human) e;
                     h.kill();
-                    grid.set(x, y, new CommonZombie());
+                    grid.set(new Cell(x, y), new CommonZombie());
                 }
             }
     }
@@ -68,7 +69,7 @@ public class TurnService {
             for (int x = 0; x < grid.getWidth(); x++)
                 if (grid.get(x, y) instanceof LivingEntity && !((LivingEntity) grid.get(x, y)).isPresent()) {
                     LivingEntity le = (LivingEntity) grid.get(x, y);
-                    grid.set(x, y, null);
+                    grid.set(new Cell(x, y), new CommonZombie());
                 }
     }
 }

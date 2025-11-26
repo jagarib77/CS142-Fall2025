@@ -31,7 +31,7 @@ public class WorldInitializer {
             if (cell != null) {
                 try {
                     T entity = type.getDeclaredConstructor().newInstance();
-                    grid.set(cell.x, cell.y, entity);
+                    grid.set(cell, entity);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -3,6 +3,7 @@ package service;
 import model.entities.Entity;
 import model.entities.LivingEntity;
 import model.entities.EliteZombie;
+import model.world.Cell;
 import model.world.Direction;
 import model.world.WorldGrid;
 
@@ -29,9 +30,12 @@ public class MovementService {
     private void tryMove(LivingEntity entity, int nx, int ny) {
         nx = nx < 0 ? grid.getWidth() - 1 : nx >= grid.getWidth() ? 0 : nx;
         ny = ny < 0 ? grid.getHeight() - 1 : ny >= grid.getHeight() ? 0 : ny;
+
+        Cell next = new Cell(nx, ny);
         if (grid.get(nx, ny) == null) {
-            grid.set(entity.getX(), entity.getY(), null);
-            grid.set(nx, ny, entity);
+            grid.set(entity.getCell(), null);
+            grid.set(next, entity);
+            entity.setPosition(next);  // ← Clean!
         }
     }
 

@@ -12,10 +12,10 @@ public class WorldGrid {
         this.grid = new Entity[height][width];
     }
 
-    public void set(int x, int y, Entity e) {
-        if (isValid(x, y)) {
-            grid[y][x] = e;
-            if (e != null) e.setPosition(x, y);
+    public void set(Cell cell, Entity e) {
+        if (isValid(cell.x, cell.y)) {
+            grid[cell.y][cell.x] = e;
+            if (e != null) e.setPosition(cell);
         }
     }
 
@@ -24,7 +24,9 @@ public class WorldGrid {
     }
 
     public void remove(Entity e) {
-        if (e != null) set(e.getX(), e.getY(), null);
+        if (e != null && e.getCell() != null) {
+            set(e.getCell(), null);
+        }
     }
 
     public boolean isValid(int x, int y) {

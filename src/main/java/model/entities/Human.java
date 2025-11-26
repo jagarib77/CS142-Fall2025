@@ -76,7 +76,7 @@ public abstract class Human extends LivingEntity {
     protected void tryPickup(Simulation grid) {
         for (int dy = -1; dy <= 1; dy++) {
             for (int dx = -1; dx <= 1; dx++) {
-                int nx = x + dx, ny = y + dy;
+                int nx = getX() + dx, ny = getY() + dy;
                 if (grid.isValid(nx, ny)) {
                     Entity e = grid.get(nx, ny);
                     if (e instanceof Equipment) {

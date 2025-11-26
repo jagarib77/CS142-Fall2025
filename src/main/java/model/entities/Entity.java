@@ -1,26 +1,26 @@
 package model.entities;
 
-/**
- * Base class for all objects in the world.
- */
+import model.world.Cell;
+
 public abstract class Entity {
-    protected int x;
-    protected int y;
+    private Cell cell;
 
-    public int getX() {
-        return x;
+    protected Entity(Cell cell) {
+        this.cell = cell;
     }
 
-    public int getY() {
-        return y;
-    }
+    public int getX() { return cell.x; }
+    public int getY() { return cell.y; }
+    public Cell getCell() { return cell; }
 
     public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.cell = new Cell(x, y);
+    }
+
+    public void setPosition(Cell cell) {
+        this.cell = cell;
     }
 
     public abstract char getSymbol();
-
     public abstract boolean isPresent();
 }

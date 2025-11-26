@@ -21,6 +21,10 @@ public abstract class LivingEntity extends Entity {
     private int speedBonus = 0;
     private int tieBreaker;
 
+    protected LivingEntity() {
+        super(null);
+    }
+
     public int getHealth() {
         return health;
     }
