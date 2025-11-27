@@ -36,7 +36,6 @@ public class Simulation {
         if (state.checkForWinner()) gameOver = true;
     }
 
-    // === ALL YOUR ORIGINAL PUBLIC METHODS — 100% UNCHANGED ===
     public void moveToward(int targetX, int targetY, LivingEntity entity) {
         movement.moveToward(targetX, targetY, entity);
     }
