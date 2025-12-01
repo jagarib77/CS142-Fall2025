@@ -9,7 +9,6 @@ import java.util.Random;
  * (movement, infection spread, recovery, death), and writes state codes
  * into the int[][] grid used by GridPanel for drawing.
  */
-
 public class PlagueIncSimulator implements GridSimulator {
 
     // Cell state codes for GridPanel
@@ -20,20 +19,105 @@ public class PlagueIncSimulator implements GridSimulator {
     public static final int VACCINATED = 4;
     public static final int DEAD       = 5;
 
-    // Simulation parameters (tweak as you like)
+    /**
+     * Encapsulates disease parameters like infectivity and lethality.
+     * Having this as a class makes it easy to support both presets and
+     * user-defined custom diseases.
+     */
+    public static class DiseaseProfile {
+        private final String name;
+        private final double infectionProbability;
+        private final double deathProbability;
+        private final double movementProbability;
+        private final int minInfectionDuration;
+        private final int maxInfectionDuration;
+
+        public DiseaseProfile(String name,
+                              double infectionProbability,
+                              double deathProbability,
+                              double movementProbability,
+                              int minInfectionDuration,
+                              int maxInfectionDuration) {
+            this.name = name;
+            this.infectionProbability = infectionProbability;
+            this.deathProbability = deathProbability;
+            this.movementProbability = movementProbability;
+            this.minInfectionDuration = minInfectionDuration;
+            this.maxInfectionDuration = maxInfectionDuration;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public double getInfectionProbability() {
+            return infectionProbability;
+        }
+
+        public double getDeathProbability() {
+            return deathProbability;
+        }
+
+        public double getMovementProbability() {
+            return movementProbability;
+        }
+
+        public int getMinInfectionDuration() {
+            return minInfectionDuration;
+        }
+
+        public int getMaxInfectionDuration() {
+            return maxInfectionDuration;
+        }
+    }
+
+    // A few preset disease profiles you can choose from
+    public static final DiseaseProfile PROFILE_MILD_FLU =
+            new DiseaseProfile("Mild Flu",
+                    0.15,  // infectionProbability
+                    0.02,  // deathProbability
+                    0.80,  // movementProbability
+                    5,     // minInfectionDuration
+                    15);   // maxInfectionDuration
+
+    public static final DiseaseProfile PROFILE_DEADLY_VIRUS =
+            new DiseaseProfile("Deadly Virus",
+                    0.35,
+                    0.25,
+                    0.70,
+                    10,
+                    30);
+
+    public static final DiseaseProfile PROFILE_ZOMBIE_PLAGUE =
+            new DiseaseProfile("Zombie Plague",
+                    0.60,
+                    0.90,
+                    0.40,
+                    15,
+                    40);
+
+    // Simulation parameters that are not disease-specific
     private double density               = 0.40;  // fraction of grid initially occupied
     private double initialInfectedFrac   = 0.02;  // fraction of population starting infected
     private double initialVaccinatedFrac = 0.10;  // fraction of population starting vaccinated
 
-    private double infectionProbability  = 0.25;  // chance a HEALTHY neighbor becomes INFECTED
-    private double movementProbability   = 0.70;  // chance a living host tries to move each tick
-    private double deathProbability      = 0.20;  // when infection resolves, chance of death
+    // Current disease profile (defaults to deadly virus)
+    private DiseaseProfile diseaseProfile = PROFILE_DEADLY_VIRUS;
 
-    private int minInfectionDuration     = 10;    // steps before infection can resolve
-    private int maxInfectionDuration     = 30;    // max steps before it basically must resolve
-
-    private PlagueIncAgent[][] agents;           // main simulation grid
+    // Main simulation grid
+    private PlagueIncAgent[][] agents;
     private final Random rand = new Random();
+
+    // Bookkeeping for stats / endgame checks
+    private int tickCounter = 0;
+    private boolean gameOver = false;
+    private String endMessage = "";
+
+    private int lastHealthyCount;
+    private int lastInfectedCount;
+    private int lastRecoveredCount;
+    private int lastVaccinatedCount;
+    private int lastDeadCount;
 
     @Override
     public void tick(int[][] states, int width, int height) {
@@ -44,7 +128,20 @@ public class PlagueIncSimulator implements GridSimulator {
         // (Re)initialize agent grid if needed
         if (agents == null || agents.length != height || agents[0].length != width) {
             initAgents(width, height);
+            gameOver = false;
+            endMessage = "";
+            tickCounter = 0;
         }
+
+        // If the game is over, keep showing the final state but don't update the world
+        if (gameOver) {
+            copyAgentsToStates(states, width, height);
+            return;
+        }
+
+        tickCounter++;
+
+        DiseaseProfile profile = this.diseaseProfile;
 
         // 1. Movement: build next agent grid
         PlagueIncAgent[][] next = new PlagueIncAgent[height][width];
@@ -60,18 +157,18 @@ public class PlagueIncSimulator implements GridSimulator {
                 int destY = y;
 
                 // living hosts may move
-                if (agent.isAlive() && rand.nextDouble() < movementProbability) {
+                if (agent.isAlive() && rand.nextDouble() < profile.getMovementProbability()) {
                     int dir = rand.nextInt(4); // 0=right,1=left,2=down,3=up
                     int nx = x;
                     int ny = y;
                     switch (dir) {
-                        case 0: nx = x + 1; break;
-                        case 1: nx = x - 1; break;
-                        case 2: ny = y + 1; break;
-                        case 3: ny = y - 1; break;
+                        case 0 -> nx = x + 1;
+                        case 1 -> nx = x - 1;
+                        case 2 -> ny = y + 1;
+                        case 3 -> ny = y - 1;
                     }
 
-                    if (nx >= 0 && nx < width && ny >= 0 && ny < height 
+                    if (nx >= 0 && nx < width && ny >= 0 && ny < height
                             && next[ny][nx] == null) {
                         destX = nx;
                         destY = ny;
@@ -96,18 +193,15 @@ public class PlagueIncSimulator implements GridSimulator {
         // Use moved agents as current state for infection logic
         agents = next;
 
-        // 2. Infection spread
+        // 2. Infection spread (infect neighbors of INFECTED hosts)
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 PlagueIncAgent agent = agents[y][x];
-                if (agent instanceof HostAgent) {
-                    HostAgent host = (HostAgent) agent;
-                    if (host.isInfectious()) {
-                        infectNeighborIfHealthy(x + 1, y, width, height);
-                        infectNeighborIfHealthy(x - 1, y, width, height);
-                        infectNeighborIfHealthy(x, y + 1, width, height);
-                        infectNeighborIfHealthy(x, y - 1, width, height);
-                    }
+                if (agent instanceof HostAgent host && host.isInfectious()) {
+                    infectNeighborIfHealthy(x + 1, y, width, height);
+                    infectNeighborIfHealthy(x - 1, y, width, height);
+                    infectNeighborIfHealthy(x, y + 1, width, height);
+                    infectNeighborIfHealthy(x, y - 1, width, height);
                 }
             }
         }
@@ -121,17 +215,18 @@ public class PlagueIncSimulator implements GridSimulator {
                     infected.incrementInfectionAge();
                     int age = infected.getInfectionAge();
 
-                    if (age >= minInfectionDuration) {
+                    if (age >= profile.getMinInfectionDuration()) {
                         double resolveChance =
-                                (double) (age - minInfectionDuration + 1)
-                                / (maxInfectionDuration - minInfectionDuration + 1);
+                                (double) (age - profile.getMinInfectionDuration() + 1)
+                                        / (profile.getMaxInfectionDuration()
+                                           - profile.getMinInfectionDuration() + 1);
                         if (resolveChance > 1.0) {
                             resolveChance = 1.0;
                         }
 
                         if (rand.nextDouble() < resolveChance) {
                             // infection ends this tick
-                            if (rand.nextDouble() < deathProbability) {
+                            if (rand.nextDouble() < profile.getDeathProbability()) {
                                 agents[y][x] = new DeadHost(y, x);
                             } else {
                                 agents[y][x] = new RecoveredHost(y, x);
@@ -142,17 +237,9 @@ public class PlagueIncSimulator implements GridSimulator {
             }
         }
 
-        // 4. Copy agent states into the int[][] for GridPanel to draw
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                PlagueIncAgent agent = agents[y][x];
-                if (agent == null) {
-                    states[y][x] = EMPTY;
-                } else {
-                    states[y][x] = agent.getStateCode();
-                }
-            }
-        }
+        // 4. Update stats, check for endgame, and copy to the int[][] for drawing
+        updateCountsAndCheckEndgame(width, height);
+        copyAgentsToStates(states, width, height);
     }
 
     private void infectNeighborIfHealthy(int x, int y, int width, int height) {
@@ -160,10 +247,9 @@ public class PlagueIncSimulator implements GridSimulator {
             return;
         }
         PlagueIncAgent neighbor = agents[y][x];
-        if (neighbor instanceof HostAgent) {
-            HostAgent host = (HostAgent) neighbor;
+        if (neighbor instanceof HostAgent host) {
             if (host.canBeInfected()) {
-                if (rand.nextDouble() < infectionProbability) {
+                if (rand.nextDouble() < diseaseProfile.getInfectionProbability()) {
                     agents[y][x] = new InfectedHost(y, x);
                 }
             }
@@ -202,6 +288,131 @@ public class PlagueIncSimulator implements GridSimulator {
                 placedHealthy++;
             }
         }
+    }
+
+    // Copy agents grid into the int[][] states for GridPanel to draw
+    private void copyAgentsToStates(int[][] states, int width, int height) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                PlagueIncAgent agent = agents[y][x];
+                if (agent == null) {
+                    states[y][x] = EMPTY;
+                } else {
+                    states[y][x] = agent.getStateCode();
+                }
+            }
+        }
+    }
+
+    // Count how many of each state we have and determine if the game is over.
+    private void updateCountsAndCheckEndgame(int width, int height) {
+        int healthy = 0;
+        int infected = 0;
+        int recovered = 0;
+        int vaccinated = 0;
+        int dead = 0;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                PlagueIncAgent agent = agents[y][x];
+                if (agent == null) {
+                    continue;
+                }
+                switch (agent.getStateCode()) {
+                    case HEALTHY -> healthy++;
+                    case INFECTED -> infected++;
+                    case RECOVERED -> recovered++;
+                    case VACCINATED -> vaccinated++;
+                    case DEAD -> dead++;
+                }
+            }
+        }
+
+        lastHealthyCount = healthy;
+        lastInfectedCount = infected;
+        lastRecoveredCount = recovered;
+        lastVaccinatedCount = vaccinated;
+        lastDeadCount = dead;
+
+        if (!gameOver) {
+            // Humanity wins: no infected, and at least one survivor (healthy, vaccinated, or recovered)
+            if (infected == 0 && (healthy + vaccinated + recovered) > 0) {
+                gameOver = true;
+                endMessage = "Plague eradicated! Some hosts survived.";
+                System.out.println(endMessage);
+            }
+            // Plague wins: no infected and no survivors, at least one agent and all dead
+            else if (infected == 0 && healthy == 0 && vaccinated == 0 && recovered == 0 && dead > 0) {
+                gameOver = true;
+                endMessage = "Everyone died. The plague has wiped out all hosts.";
+                System.out.println(endMessage);
+            }
+        }
+    }
+
+    // Use one of the predefined disease profiles
+    public void setDiseaseProfile(DiseaseProfile profile) {
+        if (profile != null) {
+            this.diseaseProfile = profile;
+        }
+    }
+
+    // Custom disease: lets the caller set infectivity, lethality, etc.
+    public void setCustomDisease(String name,
+                                 double infectionProbability,
+                                 double deathProbability,
+                                 double movementProbability,
+                                 int minInfectionDuration,
+                                 int maxInfectionDuration) {
+        this.diseaseProfile = new DiseaseProfile(
+                name,
+                infectionProbability,
+                deathProbability,
+                movementProbability,
+                minInfectionDuration,
+                maxInfectionDuration
+        );
+    }
+
+    // Getters for stats / meta info (useful for GUI if you want)
+    public DiseaseProfile getDiseaseProfile() {
+        return diseaseProfile;
+    }
+
+    public String getDiseaseName() {
+        return diseaseProfile.getName();
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public String getEndMessage() {
+        return endMessage;
+    }
+
+    public int getTickCounter() {
+        return tickCounter;
+    }
+
+    public int getHealthyCount() {
+        return lastHealthyCount;
+    }
+
+    public int getInfectedCount() {
+        return lastInfectedCount;
+    }
+
+    public int getRecoveredCount() {
+        return lastRecoveredCount;
+    }
+
+    public int getVaccinatedCount() {
+        return lastVaccinatedCount;
+    }
+
+    public int getDeadCount() {
+        return lastDeadCount;
     }
 
     // Called from MainFrame to register how each state looks
