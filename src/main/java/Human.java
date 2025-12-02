@@ -1,2 +1,4 @@
-public class Human extends Entity{
+public class Human extends Entity 
+{
+    
 }
