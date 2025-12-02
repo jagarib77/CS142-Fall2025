@@ -14,7 +14,7 @@ A **real-time animated 2D grid-based zombie outbreak simulator** written in Java
 - Zombies (Common & Elite) hunt and infect
 - Equipment (Weapon, Armor, Medkit) can be picked up → **modifies stats permanently**
 - Infected humans turn into zombies
-- Simulation ends when one side wins or max turns reached
+- Simulation ends when one side wins
 
 ---
 
@@ -27,8 +27,10 @@ src/main/java/
     ├── model/
     │    ├── entities/      
     │    │   └── behavior/      
+    │    ├── enums/             
     │    ├── items/             
-    │    ├── world/            
+    │    ├── render/            
+    │    └── world/            
     ├── service/
     ├── util/
     └── view/
@@ -45,7 +47,7 @@ Entity
     │   ├── Human
     │   │   ├── Civilian
     │   │   └── Soldier
-    │   └── Zombie
+    │   └── Undead
     │       ├── CommonZombie
     │       └── EliteZombie
     └── NoneLivingEntity
@@ -73,4 +75,4 @@ Entity
 
 **Sang Vo**  
 CS142 — Fall 2025  
-Final Project Submission
+Final Project

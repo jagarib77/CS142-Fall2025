@@ -1,4 +1,4 @@
-package model.entities.behavior;
+package model.enums;
 
 /**
  * Possible outcomes of a behavior execution.

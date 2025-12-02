@@ -1,7 +1,8 @@
 package service;
 
 import model.entities.Entity;
-import model.entities.*;
+import model.entities.Human;
+import model.entities.Undead;
 import model.world.WorldGrid;
 
 public class GameStateService {
@@ -20,8 +21,8 @@ public class GameStateService {
                     Human h = (Human) e;
                     hasHuman = true;
                 }
-                if (e instanceof Zombie && ((Zombie) e).isPresent()) {
-                    Zombie z = (Zombie) e;
+                if (e instanceof Undead && ((Undead) e).isPresent()) {
+                    Undead z = (Undead) e;
                     hasZombie = true;
                 }
             }
@@ -51,8 +52,8 @@ public class GameStateService {
         int count = 0;
         for (Entity[] row : grid.raw()) {
             for (Entity e : row) {
-                if (e instanceof Zombie && ((Zombie) e).isPresent()) {
-                    Zombie z = (Zombie) e;
+                if (e instanceof Undead && ((Undead) e).isPresent()) {
+                    Undead z = (Undead) e;
                     count++;
                 }
             }

@@ -1,4 +1,6 @@
-package model.world;
+package model.enums;
+
+import model.world.Cell;
 
 import java.util.Random;
 
@@ -31,14 +33,14 @@ public enum Direction {
      * Returns the Direction from (fromX, fromY) toward (toX, toY).
      * Prefers vertical to horizontal if diagonal.
      */
-    public static Direction toward(int fromX, int fromY, int toX, int toY) {
-        int dy = Integer.signum(toY - fromY);
-        int dx = Integer.signum(toX - fromX);
+    public static Direction toward(Cell from, Cell to) {
+        int dy = Integer.signum(to.y - from.y);
+        int dx = Integer.signum(to.x - from.x);
 
         if (dy == -1) return UP;
-        if (dy == 1) return DOWN;
+        if (dy ==  1) return DOWN;
         if (dx == -1) return LEFT;
-        if (dx == 1) return RIGHT;
+        if (dx ==  1) return RIGHT;
 
         return UP;
     }
@@ -48,5 +50,15 @@ public enum Direction {
      */
     public static Direction random(Random rng) {
         return values()[rng.nextInt(4)];
+    }
+
+    public Direction opposite() {
+        switch (this) {
+            case UP:    return DOWN;
+            case DOWN:  return UP;
+            case LEFT:  return RIGHT;
+            case RIGHT: return LEFT;
+            default:    throw new AssertionError("Unknown direction: " + this);
+        }
     }
 }

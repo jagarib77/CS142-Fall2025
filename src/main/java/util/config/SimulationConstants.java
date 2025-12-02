@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public final class SimulationConstants {
     private SimulationConstants() {
-    } // Prevent instantiation
+    }
 
     // Grid
     public static final int CELL_SIZE = 12;
@@ -30,6 +30,20 @@ public final class SimulationConstants {
     public static final Color COLOR_MEDKIT = Color.GREEN;
     public static final Color COLOR_DEFAULT = Color.DARK_GRAY;
 
+    // Debug/Logger
+    public static final boolean ENABLE_DEFAULT = true;
+    public static final String LOG_INFO = "INFO";
+    public static final String LOG_TURN = "TURN";
+    public static final String LOG_SPAWN = "SPAWN";
+    public static final String LOG_DEATH = "DEATH";
+    public static final String LOG_INFECT = "INFECT";
+    public static final String LOG_COMBAT = "COMBAT";
+    public static final String LOG_UNDEAD = "UNDEAD";
+    public static final String LOG_SETTLEMENT = "SETTLEMENT";
+    public static final String LOG_ENTITY = "ENTITY";
+    public static final String LOG_DEBUG = "DEBUG";
+    public static final String LOG_PICKUP = "PICK UP";
+
     // Overlay
     public static final Color OVERLAY_COLOR = new Color(0, 0, 0, 200);
 
@@ -50,7 +64,7 @@ public final class SimulationConstants {
 
     // Settlement System
     public static final int SETTLEMENT_MIN_SIZE = 6;
-    public static final int SETTLEMENT_FORMATION_RADIUS = 2;
+    public static final int SETTLEMENT_FORMATION_RADIUS = 5;
 
     // Zombie Horde System
     public static final int HORDE_FOLLOW_RANGE = 6;
@@ -62,17 +76,18 @@ public final class SimulationConstants {
     public static final char INFECTION_CHAR = 'I';
     public static final String INFECTION_STRING = "Infection";
 
-    // Empty
-    public static final char EMPTY_CHAR = '.';
-    public static final String EMPTY_STRING = "Empty";
+    // Floor
+    public static final char FLOOR_CHAR = '.';
+    public static final String FLOOR_STRING = "Floor";
 
     // Equipment
-    public static final int WEAPON_DAMAGE_BONUS = 20;
-    public static final int WEAPON_SPEED_PENALTY = -2;
+    public static final int WEAPON_ATTACK_BONUS = 20;
+    public static final int WEAPON_SPEED_PENALTY = -1;
     public static final char WEAPON_CHAR = 'W';
     public static final String WEAPON_STRING = "Weapon";
 
     public static final int ARMOR_DEFENSE_BONUS = 15;
+    public static final int ARMOR_SPEED_PENALTY = -2;
     public static final char ARMOR_CHAR = 'A';
     public static final String ARMOR_STRING = "Armor";
 
@@ -81,6 +96,23 @@ public final class SimulationConstants {
     public static final String MEDKIT_STRING = "Medkit";
 
     // Entity Stats
+    public static final int MIN_DAMAGE_DEFAULT = 1;
+
+    public static final int HUMAN_HEALTH_DEFAULT = 100;
+    public static final int HUMAN_DAMAGE_DEFAULT = 15;
+    public static final int HUMAN_DEFENSE_DEFAULT = 5;
+    public static final int HUMAN_SPEED_DEFAULT = 5;
+    public static final char HUMAN_CHAR_DEFAULT = 'H';
+    public static final String HUMAN_STRING_DEFAULT = "Human";
+
+    public static final int UNDEAD_HEALTH_DEFAULT = 50;
+    public static final int UNDEAD_DAMAGE_DEFAULT = 20;
+    public static final int UNDEAD_DEFENSE_DEFAULT = 0;
+    public static final int UNDEAD_SPEED_DEFAULT = 4;
+    public static final char UNDEAD_CHAR_DEFAULT = 'U';
+    public static final String UNDEAD_STRING_DEFAULT = "Undead";
+
+    public static final int ZOMBIE_REPEL_RANGE = 8;
     public static final int CIVILIAN_HEALTH = 50;
     public static final int CIVILIAN_DAMAGE = 5;
     public static final int CIVILIAN_SPEED = 9;
@@ -89,6 +121,7 @@ public final class SimulationConstants {
 
     public static final int SOLDIER_HEALTH = 100;
     public static final int SOLDIER_DAMAGE = 25;
+    public static final int SOLDIER_DEFENSE = 10;
     public static final int SOLDIER_SPEED = 11;
     public static final char SOLDIER_CHAR = 'S';
     public static final String SOLDIER_STRING = "Soldier";
@@ -108,9 +141,9 @@ public final class SimulationConstants {
 
     // Spawn Counts
     public static final int SPAWN_CIVILIANS = 20;
-    public static final int SPAWN_SOLDIERS = 8;
-    public static final int SPAWN_COMMON_ZOMBIES = 12;
-    public static final int SPAWN_ELITES = 3;
+    public static final int SPAWN_SOLDIERS = 10;
+    public static final int SPAWN_COMMON_ZOMBIES = 25;
+    public static final int SPAWN_ELITES_ZOMBIES = 5;
     public static final int SPAWN_WEAPONS = 10;
     public static final int SPAWN_ARMORS = 6;
     public static final int SPAWN_MEDKITS = 8;

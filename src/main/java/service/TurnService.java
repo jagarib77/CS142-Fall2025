@@ -1,75 +1,112 @@
 package service;
 
-import model.entities.Entity;
+import model.entities.CommonZombie;
+import model.entities.Human;
 import model.entities.LivingEntity;
-import model.entities.*;
 import model.world.Cell;
 import model.world.Simulation;
 import model.world.WorldGrid;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
+import static util.DebugLogger.*;
+
+/**
+ * Manages turn order, initiative, actions, infection, and cleanup.
+ */
 public class TurnService {
     private final WorldGrid grid;
     private final Simulation simulation;
-    private final Random rng = new Random();
+    private int turnCounter = 0;
 
     public TurnService(WorldGrid grid, Simulation simulation) {
         this.grid = grid;
         this.simulation = simulation;
     }
 
-    public void update() {
-        List<LivingEntity> actors = collectLiving();
-        sortByInitiative(actors);
-        letEveryoneAct(actors);
-        transformInfected();
-        removeDead();
+    /**
+     * Executes one complete game turn.
+     */
+    public void processTurn() {
+        turnCounter++;
+        System.out.println();
+        System.out.println();
+        System.out.println("=============================================================");
+        turn("TURN: " + turnCounter);
+
+
+        List<LivingEntity> list = collectActiveEntities();
+        sortByInitiative(list);
+        executeActions(list);
+        transformInfectedHumans();
+        cleanupDeadEntities();
+        System.out.println("=============================================================");
     }
 
-    private List<LivingEntity> collectLiving() {
+    /**
+     * Collects all living, active entities from the grid.
+     */
+    private List<LivingEntity> collectActiveEntities() {
         List<LivingEntity> list = new ArrayList<>();
-        for (Entity[] row : grid.raw())
-            for (Entity e : row)
-                if (e instanceof LivingEntity && ((LivingEntity) e).isPresent()) {
-                    LivingEntity le = (LivingEntity) e;
+
+        for (int y = 0; y < grid.getHeight(); y++) {
+            for (int x = 0; x < grid.getWidth(); x++) {
+                LivingEntity le = grid.getLivingAt(x, y);
+                if (le != null && le.isPresent()) {
                     list.add(le);
                 }
+            }
+        }
         return list;
     }
 
-    private void sortByInitiative(List<LivingEntity> actors) {
-        for (LivingEntity e : actors) e.setTieBreaker(rng.nextInt());
-        actors.sort((a, b) -> {
-            int cmp = Integer.compare(b.getInitiative(), a.getInitiative());
-            return cmp != 0 ? cmp : Integer.compare(a.getTieBreaker(), b.getTieBreaker());
-        });
+    /**
+     * Sorts entities by initiative, descending.
+     */
+    private void sortByInitiative(List<LivingEntity> list) {
+        list.sort(Comparator.comparingInt(LivingEntity::getInitiative).reversed());
     }
 
-    private void letEveryoneAct(List<LivingEntity> actors) {
-        for (LivingEntity le : actors)
-            if (le.isPresent())
+    /**
+     * Lets every living entity perform its behavior chain.
+     */
+    private void executeActions(List<LivingEntity> list) {
+        for (LivingEntity le : list) {
+            if (le.isPresent()) {
                 le.act(simulation);
+            }
+        }
     }
 
-    private void transformInfected() {
-        for (int y = 0; y < grid.getHeight(); y++)
+    /**
+     * Transforms humans who have been infected long enough into zombies.
+     */
+    private void transformInfectedHumans() {
+        for (int y = 0; y < grid.getHeight(); y++) {
             for (int x = 0; x < grid.getWidth(); x++) {
-                Entity e = grid.get(x, y);
-                if (e instanceof Human && ((Human) e).shouldBecomeZombie()) {
-                    Human h = (Human) e;
-                    h.kill();
-                    grid.set(new Cell(x, y), new CommonZombie());
+                Human human = grid.getAs(x, y, Human.class);
+                if (human != null && human.shouldBecomeZombie()) {
+                    Cell cell = new Cell(x, y);
+                    human.kill();
+                    grid.set(cell, new CommonZombie(cell));
                 }
             }
+        }
     }
 
-    private void removeDead() {
-        for (int y = 0; y < grid.getHeight(); y++)
-            for (int x = 0; x < grid.getWidth(); x++)
-                if (grid.get(x, y) instanceof LivingEntity && !((LivingEntity) grid.get(x, y)).isPresent()) {
-                    LivingEntity le = (LivingEntity) grid.get(x, y);
-                    grid.set(new Cell(x, y), new CommonZombie());
+    /**
+     * Removes dead entities from the grid.
+     */
+    private void cleanupDeadEntities() {
+        for (int y = 0; y < grid.getHeight(); y++) {
+            for (int x = 0; x < grid.getWidth(); x++) {
+                LivingEntity entity = grid.getLivingAt(x, y);
+                if (entity != null && entity.isDead()) {
+                    grid.set(new Cell(x, y), null);
                 }
+            }
+        }
     }
 }

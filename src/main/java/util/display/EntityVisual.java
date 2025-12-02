@@ -1,6 +1,6 @@
 package util.display;
 
-import java.awt.Color;
+import java.awt.*;
 
 import static util.config.SimulationConstants.*;
 
@@ -9,7 +9,7 @@ import static util.config.SimulationConstants.*;
  * Used by GridPanel and StatusPanel for rendering.
  */
 public enum EntityVisual {
-    EMPTY(EMPTY_CHAR, COLOR_DEFAULT, EMPTY_STRING),
+    FLOOR(FLOOR_CHAR, COLOR_DEFAULT, FLOOR_STRING),
     INFECTION(INFECTION_CHAR, COLOR_INFECTION, INFECTION_STRING),
     CIVILIAN(CIVILIAN_CHAR, COLOR_CIVILIAN, CIVILIAN_STRING),
     SOLDIER(SOLDIER_CHAR, COLOR_SOLDIER, SOLDIER_STRING),
@@ -45,6 +45,6 @@ public enum EntityVisual {
         for (EntityVisual e : values()) {
             if (e.symbol == c) return e;
         }
-        return EMPTY;
+        return FLOOR;
     }
 }

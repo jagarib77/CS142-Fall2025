@@ -1,7 +1,7 @@
 package view;
 
-import util.display.EntityVisual;
 import model.world.Simulation;
+import util.display.EntityVisual;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +28,7 @@ public class StatusPanel extends JPanel {
         int y = 20;
 
         for (EntityVisual ev : EntityVisual.values()) {
-            if (ev == EntityVisual.EMPTY) continue;
+            if (ev == EntityVisual.FLOOR) continue;
 
             int count = grid.countEntitiesBySymbol(ev.getSymbol());
 

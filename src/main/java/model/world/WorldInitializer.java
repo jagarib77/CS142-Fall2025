@@ -1,49 +1,50 @@
 package model.world;
 
-import model.entities.Entity;
 import model.entities.*;
-import model.items.*;
+import model.items.Armor;
+import model.items.Medkit;
+import model.items.Weapon;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import static util.config.SimulationConstants.*;
 
 public class WorldInitializer {
     private final WorldGrid grid;
-    private final Random rng = new Random();
+    private final Random RANDOM = new Random();
 
     public WorldInitializer(WorldGrid grid) {
         this.grid = grid;
     }
 
     public void spawnInitialWorld() {
-        spawn(Civilian.class, SPAWN_CIVILIANS);
-        spawn(Soldier.class, SPAWN_SOLDIERS);
-        spawn(CommonZombie.class, SPAWN_COMMON_ZOMBIES);
-        spawn(Weapon.class, SPAWN_WEAPONS);
-        spawn(Armor.class, SPAWN_ARMORS);
-        spawn(Medkit.class, SPAWN_MEDKITS);
+        spawn(Civilian::new, SPAWN_CIVILIANS);
+        spawn(Soldier::new, SPAWN_SOLDIERS);
+        spawn(CommonZombie::new, SPAWN_COMMON_ZOMBIES);
+        spawn(EliteZombie::new, SPAWN_ELITES_ZOMBIES);
+        spawn(Weapon::new, SPAWN_WEAPONS);
+        spawn(Armor::new, SPAWN_ARMORS);
+        spawn(Medkit::new, SPAWN_MEDKITS);
     }
 
-    private <T extends Entity> void spawn(Class<T> type, int count) {
+    private <T extends Entity> void spawn(Function<Cell, T> factory, int count) {
         for (int i = 0; i < count; i++) {
             Cell cell = findEmptyCell();
             if (cell != null) {
-                try {
-                    T entity = type.getDeclaredConstructor().newInstance();
-                    grid.set(cell, entity);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                T entity = factory.apply(cell);
+                grid.set(cell, entity);
             }
         }
     }
 
     private Cell findEmptyCell() {
         for (int i = 0; i < 200; i++) {
-            int x = rng.nextInt(grid.getWidth());
-            int y = rng.nextInt(grid.getHeight());
-            if (grid.get(x, y) == null) return new Cell(x, y);
+            int x = RANDOM.nextInt(grid.getWidth());
+            int y = RANDOM.nextInt(grid.getHeight());
+            if (grid.get(x, y) == null) {
+                return new Cell(x, y);
+            }
         }
         return null;
     }

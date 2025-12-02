@@ -2,7 +2,6 @@ package model.world;
 
 import model.entities.Entity;
 import model.entities.LivingEntity;
-import model.entities.EliteZombie;
 import service.GameStateService;
 import service.MovementService;
 import service.TurnService;
@@ -32,63 +31,91 @@ public class Simulation {
 
     public void update() {
         if (gameOver) return;
-        turn.update();
+        turn.processTurn();
         if (state.checkForWinner()) gameOver = true;
     }
 
-    // === ALL YOUR ORIGINAL PUBLIC METHODS — 100% UNCHANGED ===
-    public void moveToward(int targetX, int targetY, LivingEntity entity) {
-        movement.moveToward(targetX, targetY, entity);
+    public void moveToward(Cell target, LivingEntity entity) {
+        movement.moveToward(target, entity);
+    }
+
+    public void moveToward(LivingEntity target, LivingEntity mover) {
+        if (target != null && target.getCell() != null) {
+            moveToward(target.getCell(), mover);
+        }
+    }
+
+    public void moveAwayFrom(LivingEntity mover, Entity avoid) {
+        if (avoid == null || avoid.getCell() == null) return;
+
+        int dx = mover.getX() - avoid.getX();
+        int dy = mover.getY() - avoid.getY();
+        Cell away = new Cell(
+                mover.getX() + Integer.signum(dx),
+                mover.getY() + Integer.signum(dy));
+
+        if (isValid(away)) {
+            moveToward(away, mover);
+        }
     }
 
     public void moveRandomly(LivingEntity entity) {
         movement.moveRandomly(entity);
     }
 
-    public <T extends LivingEntity> void moveTowardNearest(LivingEntity e, Class<T> target) {
-        T t = movement.findNearest(e.getX(), e.getY(), target);
-        if (t != null) moveToward(t.getX(), t.getY(), e);
+    public <T extends LivingEntity> void moveTowardNearest(LivingEntity entity, Class<T> targetType) {
+        T nearest = movement.findNearest(entity, targetType);
+        if (nearest != null) {
+            moveToward(nearest.getCell(), entity);
+        }
     }
 
-    public <T extends LivingEntity> T findNearest(int fromX, int fromY, Class<T> type) {
-        return movement.findNearest(fromX, fromY, type);
+    public <T extends LivingEntity> T findNearest(Cell from, Class<T> type) {
+        return movement.findNearest(from, type);
     }
 
-    public EliteZombie findNearestElite(int x, int y) {
-        return movement.findNearestElite(x, y);
+    public List<LivingEntity> getNearbyLiving(Cell center, int range) {
+        return getNearbyLiving(center.x, center.y, range);
     }
 
-    public List<LivingEntity> getNearbyLiving(int centerX, int centerY, int range) {
-        List<LivingEntity> list = new ArrayList<>();
+    private List<LivingEntity> getNearbyLiving(int centerX, int centerY, int range) {
+        List<LivingEntity> result = new ArrayList<>();
         int startX = Math.max(0, centerX - range);
-        int endX = Math.min(getWidth() - 1, centerX + range);
+        int endX   = Math.min(getWidth() - 1, centerX + range);
         int startY = Math.max(0, centerY - range);
-        int endY = Math.min(getHeight() - 1, centerY + range);
-        for (int y = startY; y <= endY; y++)
+        int endY   = Math.min(getHeight() - 1, centerY + range);
+
+        for (int y = startY; y <= endY; y++) {
             for (int x = startX; x <= endX; x++) {
                 Entity e = grid.get(x, y);
                 if (e instanceof LivingEntity && ((LivingEntity) e).isPresent()) {
                     LivingEntity le = (LivingEntity) e;
-                    list.add(le);
+                    result.add(le);
                 }
             }
-        return list;
+        }
+        return result;
     }
 
-    public int distanceBetween(LivingEntity a, LivingEntity b) {
-        return Math.abs(a.getX() - b.getX()) + Math.abs(a.getY() - b.getY());
-    }
-
-    public void remove(Entity e) {
-        grid.remove(e);
-    }
-
-    public Entity get(int x, int y) {
-        return grid.get(x, y);
+    public boolean isValid(Cell cell) {
+        if (cell == null) return false;
+        return cell.x >= 0 && cell.y >= 0
+                && cell.x < getWidth()
+                && cell.y < getHeight();
     }
 
     public boolean isValid(int x, int y) {
-        return grid.isValid(x, y);
+        return x >= 0 && y >= 0
+                && x < getWidth()
+                && y < getHeight();
+    }
+
+    public void remove(Entity entity) {
+        grid.remove(entity);
+    }
+
+    public Entity get(Cell cell) {
+        return cell != null ? grid.get(cell) : null;
     }
 
     public int getWidth() {

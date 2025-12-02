@@ -1,5 +1,7 @@
 package model.world;
 
+import model.enums.Direction;
+
 /**
  * Represents a single location in the simulation grid.
  */
@@ -12,11 +14,18 @@ public class Cell {
         this.y = y;
     }
 
-    /**
-     * Returns a new Cell moved in the given direction
-     */
     public Cell move(Direction direction) {
         return new Cell(x + direction.dx(), y + direction.dy());
+    }
+
+    public int distanceTo(Cell other) {
+        return Math.abs(this.x - other.x) + Math.abs(this.y - other.y);
+    }
+
+    public boolean isAdjacentTo(Cell other) {
+        int dx = Math.abs(x - other.x);
+        int dy = Math.abs(y - other.y);
+        return dx <= 1 && dy <= 1 && !(dx == 0 && dy == 0);
     }
 
     @Override

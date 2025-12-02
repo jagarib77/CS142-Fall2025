@@ -2,51 +2,70 @@ package service;
 
 import model.entities.Entity;
 import model.entities.LivingEntity;
-import model.entities.EliteZombie;
+import model.enums.Direction;
 import model.world.Cell;
-import model.world.Direction;
 import model.world.WorldGrid;
 
 import java.util.Random;
 
 public class MovementService {
     private final WorldGrid grid;
-    private final Random rng = new Random();
+    private final Random RANDOM = new Random();
 
     public MovementService(WorldGrid grid) {
         this.grid = grid;
     }
 
-    public void moveToward(int targetX, int targetY, LivingEntity entity) {
-        Direction dir = Direction.toward(entity.getX(), entity.getY(), targetX, targetY);
-        tryMove(entity, entity.getX() + dir.dx(), entity.getY() + dir.dy());
+    public void moveToward(Cell target, LivingEntity entity) {
+        Direction dir = Direction.toward(entity.getCell(), target);
+        tryMove(entity, entity.getCell().move(dir));
+    }
+
+    public void moveToward(LivingEntity from, LivingEntity target) {
+        if (target != null) moveToward(target.getCell(), from);
     }
 
     public void moveRandomly(LivingEntity entity) {
-        Direction dir = Direction.random(rng);
-        tryMove(entity, entity.getX() + dir.dx(), entity.getY() + dir.dy());
+        Direction dir = Direction.random(RANDOM);
+        tryMove(entity, entity.getCell().move(dir));
     }
 
-    private void tryMove(LivingEntity entity, int nx, int ny) {
-        nx = nx < 0 ? grid.getWidth() - 1 : nx >= grid.getWidth() ? 0 : nx;
-        ny = ny < 0 ? grid.getHeight() - 1 : ny >= grid.getHeight() ? 0 : ny;
+    public void tryMove(LivingEntity entity, Cell next) {
+        next = wrapAround(next);
 
-        Cell next = new Cell(nx, ny);
-        if (grid.get(nx, ny) == null) {
+        if (grid.get(next) == null) {
             grid.set(entity.getCell(), null);
             grid.set(next, entity);
-            entity.setPosition(next);  // ← Clean!
+            entity.setPosition(next);
         }
     }
 
-    public <T extends LivingEntity> T findNearest(int fromX, int fromY, Class<T> type) {
+    private Cell wrapAround(Cell cell) {
+        int x = cell.x;
+        int y = cell.y;
+
+        if (x < 0) x = grid.getWidth() - 1;
+        if (x >= grid.getWidth()) x = 0;
+        if (y < 0) y = grid.getHeight() - 1;
+        if (y >= grid.getHeight()) y = 0;
+
+        return new Cell(x, y);
+    }
+
+    public <T extends LivingEntity> T findNearest(LivingEntity from, Class<T> type) {
+        return findNearest(from.getCell(), type);
+    }
+
+    public <T extends LivingEntity> T findNearest(Cell from, Class<T> type) {
         T best = null;
         int bestDist = Integer.MAX_VALUE;
+
         for (int y = 0; y < grid.getHeight(); y++) {
             for (int x = 0; x < grid.getWidth(); x++) {
                 Entity e = grid.get(x, y);
                 if (type.isInstance(e) && e.isPresent()) {
-                    int d = Math.abs(x - fromX) + Math.abs(y - fromY);
+                    Cell pos = e.getCell();
+                    int d = from.distanceTo(pos);
                     if (d < bestDist) {
                         bestDist = d;
                         best = type.cast(e);
@@ -55,9 +74,5 @@ public class MovementService {
             }
         }
         return best;
-    }
-
-    public EliteZombie findNearestElite(int x, int y) {
-        return findNearest(x, y, EliteZombie.class);
     }
 }

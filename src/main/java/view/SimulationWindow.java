@@ -13,17 +13,17 @@ public class SimulationWindow {
     }
 
     public static void startNewSimulation() {
-        Simulation grid = new Simulation();
-        grid.spawnInitialWorld();
+        Simulation sim = new Simulation();
+        sim.spawnInitialWorld();
 
         System.out.println("=== ZOMBIE APOCALYPSE — SANG VO EDITION ===");
-        System.out.println("World created. " + grid.countHumans() + " humans vs "
-                + grid.countZombies() + " zombies.");
-        System.out.println(grid);
+        System.out.println("World created. " + sim.countHumans() + " humans vs "
+                + sim.countZombies() + " zombies.");
+        System.out.println(sim);
 
-        GridPanel gridPanel = new GridPanel(grid);
-        StatusPanel statusPanel = new StatusPanel(grid);
-        SimulationController controller = new SimulationController(grid, gridPanel, statusPanel);
+        GridPanel gridPanel = new GridPanel(sim);
+        StatusPanel statusPanel = new StatusPanel(sim);
+        SimulationController controller = new SimulationController(sim, gridPanel, statusPanel);
 
         JFrame frame = new JFrame("Zombie Simulation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,10 +31,14 @@ public class SimulationWindow {
 
         frame.add(gridPanel, BorderLayout.CENTER);
         frame.add(statusPanel, BorderLayout.EAST);
-        frame.add(ControlPanel.create(controller), BorderLayout.SOUTH);
+        frame.add(ControlPanel.create(controller, frame), BorderLayout.SOUTH);
 
         frame.pack();
         frame.setLocationRelativeTo(null);
+
         frame.setVisible(true);
+
+        controller.stopTimer();
+        System.out.println(">>> SIMULATION STARTED — PAUSED (Press P to play)");
     }
 }

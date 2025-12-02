@@ -1,8 +1,9 @@
 package view;
 
 import model.entities.Entity;
-import util.display.EntityVisual;
+import model.world.Cell;
 import model.world.Simulation;
+import util.display.EntityVisual;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,8 +49,8 @@ public class GridPanel extends JPanel {
      * Draw a single cell and its symbol
      */
     private void drawCell(Graphics g, int x, int y) {
-        Entity e = grid.get(x, y);
-        char symbol = (e != null) ? e.getSymbol() : EntityVisual.EMPTY.getSymbol();
+        Entity e = grid.get(new Cell(x, y));
+        char symbol = (e != null) ? e.getSymbol() : EntityVisual.FLOOR.getSymbol();
         EntityVisual visual = EntityVisual.fromChar(symbol);
 
         g.setColor(visual.getColor());
