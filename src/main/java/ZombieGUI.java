@@ -51,8 +51,10 @@ public class ZombieGUI {
 
         final Map<String, Object>[] result = new Map[]{null};
 
+        //user input is stored here
         okButton.addActionListener((ActionEvent e) -> {
             Map<String, Object> map = new HashMap<>();
+            // TODO: add validation input here
             try {
                 for (int i = 0; i < names.length; i++) {
                     if (types[i] == Boolean.TYPE) {
@@ -113,7 +115,23 @@ public class ZombieGUI {
             cell.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             gridPanel.add(cell);
         }
+        boolean chosenOne = (boolean) settings.get("Enable ChosenOne");
+        int infectionRate = (int) settings.get("Infection Rate");
+        int healRate = (int) settings.get("Heal Rate");
+        int numZombies = (int) settings.get("Number of Zombies");
+        int numMedic = (int) settings.get("Number of Medic");
 
+        // Create the model with the correct argument order
+        ZombieInvasionModel model = new ZombieInvasionModel(
+                height,       // row
+                width,        // column
+                numZombies,
+                numMedic,
+                chosenOne,          // boolean
+                infectionRate / 100.0,   // convert to % if needed
+                healRate / 100.0         // convert to % if needed
+        );
+        model.printEntity();
         gridFrame.add(gridPanel, BorderLayout.CENTER);
         //updates simulation every 500ms (change if needed)
         Timer timer = new Timer(500, e -> {
@@ -121,7 +139,18 @@ public class ZombieGUI {
             dayLabel.setText("Day: " + day[0]);
 
             // TODO: call your model.updateTick() here when model class is ready. dont forget
-            //ZombieInvasionModel.updateTick();
+            model.updateTick();
+            // redraw the grid based on current entity states
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    Entity entity = model.getGrid()[i][j];
+                    if (entity != null) {
+                        gridPanel.getComponent(i * width + j).setBackground(entity.getColor());
+                    } else {
+                        gridPanel.getComponent(i * width + j).setBackground(Color.WHITE);
+                    }
+                }
+            }
             // redrawsw the grid
             gridPanel.repaint();
         });

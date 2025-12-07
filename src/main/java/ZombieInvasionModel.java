@@ -1,69 +1,38 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+//This class handles:
+//Any rules of the simulation
 public class ZombieInvasionModel {
     private Entity[][] grid;
     //Size of grid
     private int row;
     private int column;
-    //Used to specify where Case Zero can Start
+    //Used to specify where Case Zero can Start NOTE: maybe scrap
     private int xCordinate;
     private int yCordinate;
-    //infection rate/heal rate / otherCustomization
-    private double infectionRate;
-    private double healRate;
-    //checks all possible sorrounding squares with
-    //each direction.
-    private static final int[][] DIRECTIONS = {
-            {-1, 0},  {1, 0},   {0, -1}, {0, 1},
-            {-1, 1},  {-1, -1}, {1, 1},  {1, -1}
-    };
     //Default values for # of zombies and medics and location
     private int numOfZombies;
     private int numOfMedics;
+    private double infectionRate;
+    private double healRate;
+    //Default value chosenOne being enabled
+    private boolean humanitySaved;
 
-    //overloaded constructor creats Entity[][] grid
-    // with specified rows and column
-    //SHOULD BE SAME SIZE AS DIMESNIONS SET IN SETTINGS
-    public ZombieInvasionModel(int row, int column) {
+
+    //overloaded constructor creates Entity[][] grid
+    // with specified settings set in GUI
+    public ZombieInvasionModel(int row, int column, int numOfZombies,int numOfMedic, boolean humanitySaved, double infectionRate,double healRate){
         this.row = row;
         this.column = column;
+        this.numOfZombies = numOfZombies;
+        this.numOfMedics = numOfMedic;
+        this.humanitySaved = humanitySaved;
+        this.infectionRate = infectionRate;
+        this.healRate = healRate;
         grid = new Entity[row][column];
-    }
-    //Overloaded constructor that creates Entity[][]grid
-    //specifies how many humans, zombies, medic, ect.
-    //And specifies if ChosenOne is available option to put in grid
-    public ZombieInvasionModel(int row, int column, int numOfZombies,int numOfMedic) {
-        this(row, column);
         intiliazeEntities();
     }
-    //Overloaded constructor that creates Entity[][]grid
-    //Specifies all of the above and WHERE CASE ZERO IS
-    //;where the first zombie starts in simulation
-    public ZombieInvasionModel(int row, int column, int numOfZombies,int numOfMedic,
-                               boolean humanitySaved){
-        this(row,column,numOfZombies,numOfMedic);
-        
-    }
-    //OverLoaded constructor that creates Entity[][]grid
-    //specifices infection rate, medic rate, ect., if chosen one allowed
-    public ZombieInvasionModel(int row, int column, int numOfZombies,int numOfMedic,
-                               boolean humanitySaved, double infectionRate, double healRate){
-        this(row,column,numOfZombies,numOfMedic, humanitySaved);
-    }
-
-    public Entity[][] getGrid() { return grid; }
-    //Update all changes that happen on the grid
-    //objects are changed but color is changed in ZombieGUI class
-    public static void updateTick() {
-        //zombie entity becomes human?
-        //if trigger/flag call infect
-        //if trigger/flag call heal
-        //if trigger/flag call ability
-        //
-    }
-
     //Helper method that creates the grid according to specifications
     private void intiliazeEntities(){
         List<Entity> types = new ArrayList<>();
@@ -88,37 +57,36 @@ public class ZombieInvasionModel {
             }
         }
     }
-
+    //Update all changes that happen on the grid
+    //objects are changed but color is changed in ZombieGUI class
+    // BECAUSE OF ORDER OF METHOD CALLS INFECT TAKES PRIORITY
+    // I.E zombie will change grid first before humans
+    public void updateTick() {
+        infect();
+        heal();
+    }
     //Checks if square is zombie and able to infect
-    //calls on infectNeighbors method
+    //calls on performAction method polymorphism
     private void infect(){
-
         for (int i = 0; i < row; i++){
             for (int j = 0; j < column; j++) {
-                Entity entity = grid[row][column];
-                //if (entity.isZombie()) {    // TODO: NEED BOOLEAN METHOD TO CHECK IF ZOMBIE
-                    //call helpermethod that changes
-                //}
+                Entity entity = grid[i][j];
+                if (!entity.isHuman()) {
+                     entity.performAction(grid, infectionRate, i, j);
+                }
             }
         }
     }
-    //helper methods that CHANGE THE ACTUAL GRID OBJECT
-    //change happens here
-    private void infectNeighbors(){
-        //if infect change this cordinate to be zombie IF ITS NOT ZOMBIE
-        int[][] possibleAttack = {
-                {-1, 0}, {1, 0}, {0, -1}, {0, 1},
-                {-1,1}, {-1,-1}, {1,1}, {1,-1}
-        };
-
-        //if entity[x][y].isHuman()
-        //use infectionRate(
-        //create new Zombie at those cordinates)
-
-    }
-    private void heal(){
-    }
-    private void chosenOne(){
+    //Check if square is zombie and able to heal
+    private void heal() {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                Entity entity = grid[i][j];
+                if (entity instanceof Medic) {    // TODO: need action for humans side
+                    entity.performAction(grid,healRate, i, j);
+                }
+            }
+        }
     }
     //GETTER & SETTERS
     public int getColumn() {
@@ -136,16 +104,16 @@ public class ZombieInvasionModel {
     public void setRow(int row) {
         this.row = row;
     }
-    //create print entity here
+    public Entity[][] getGrid() { return grid; }
+    //debug method
+    public void printEntity() {
+        for (int i = 0; i < row; i++){
+            for (int j = 0; j < column; j++) {
+                Entity entity = grid[i][j];
+                System.out.print("[" + entity.toString() + "]");
+                if (j < column - 1) System.out.print(",");
+            }
+            System.out.println(); // new row
+        }
+    }
 }
-//This class handles:
-//
-//The Entity[][] grid
-//
-//Infecting neighbors
-//
-//Medics healing zombies
-//
-//Moving entities (if you have movement)
-//
-//Any rules of the simulation
