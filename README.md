@@ -62,8 +62,7 @@ Entity
 
 ## Demo
 
-![Zombie Apocalypse Simulation](demo.gif)  
-*Work in progress (GIF)*
+![Zombie Apocalypse Simulation](demo.gif)
 
 ---
 
