@@ -13,6 +13,7 @@ public class SimulationWindow {
     }
 
     public static void startNewSimulation() {
+        SpawnConfig.showAndWait();
         Simulation sim = new Simulation();
         sim.spawnInitialWorld();
 

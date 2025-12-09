@@ -1,14 +1,12 @@
 package model.world;
 
 import model.entities.*;
-import model.items.Armor;
-import model.items.Medkit;
-import model.items.Weapon;
+import model.items.*;
+import view.SpawnConfig;
 
 import java.util.Random;
 import java.util.function.Function;
 
-import static util.config.SimulationConstants.*;
 
 public class WorldInitializer {
     private final WorldGrid grid;
@@ -19,16 +17,16 @@ public class WorldInitializer {
     }
 
     public void spawnInitialWorld() {
-        spawn(Civilian::new, SPAWN_CIVILIANS);
-        spawn(Soldier::new, SPAWN_SOLDIERS);
-        spawn(CommonZombie::new, SPAWN_COMMON_ZOMBIES);
-        spawn(EliteZombie::new, SPAWN_ELITES_ZOMBIES);
-        spawn(Weapon::new, SPAWN_WEAPONS);
-        spawn(Armor::new, SPAWN_ARMORS);
-        spawn(Medkit::new, SPAWN_MEDKITS);
+        spawn(SpawnConfig.getCivilians(),     Civilian::new);
+        spawn(SpawnConfig.getSoldiers(),      Soldier::new);
+        spawn(SpawnConfig.getCommonZombies(), CommonZombie::new);
+        spawn(SpawnConfig.getEliteZombies(),  EliteZombie::new);
+        spawn(SpawnConfig.getWeapons(),       Weapon::new);
+        spawn(SpawnConfig.getArmors(),        Armor::new);
+        spawn(SpawnConfig.getMedkits(),       Medkit::new);
     }
 
-    private <T extends Entity> void spawn(Function<Cell, T> factory, int count) {
+    private <T extends Entity> void spawn(int count, Function<Cell, T> factory) {
         for (int i = 0; i < count; i++) {
             Cell cell = findEmptyCell();
             if (cell != null) {

@@ -16,8 +16,10 @@ public final class SimulationConstants {
     public static final int STATUS_PANEL_WIDTH = 170;
 
     // Font
-    public static final Font GAME_OVER_FONT = new Font("Arial", Font.BOLD, 50);
-    public static final Font GAME_STAT_FONT = new Font("Arial", Font.PLAIN, 14);
+    public static final Font GAME_OVER_FONT = new Font("Segoe UI", Font.BOLD, 50);
+    public static final Font GAME_STAT_FONT = new Font("Segoe UI", Font.PLAIN, 14);
+    public static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 14);
+    public static final Font INPUT_FONT = new Font("Segoe UI", Font.PLAIN, 12);
 
     // Colors
     public static final Color COLOR_CIVILIAN = Color.CYAN;
@@ -140,11 +142,11 @@ public final class SimulationConstants {
     public static final String ELITE_ZOMBIE_STRING = "Elite Zombie";
 
     // Spawn Counts
-    public static final int SPAWN_CIVILIANS = 20;
-    public static final int SPAWN_SOLDIERS = 10;
-    public static final int SPAWN_COMMON_ZOMBIES = 25;
-    public static final int SPAWN_ELITES_ZOMBIES = 5;
-    public static final int SPAWN_WEAPONS = 10;
-    public static final int SPAWN_ARMORS = 6;
-    public static final int SPAWN_MEDKITS = 8;
+    public static final int DEFAULT_SPAWN_CIVILIANS = 20;
+    public static final int DEFAULT_SPAWN_SOLDIERS = 10;
+    public static final int DEFAULT_SPAWN_COMMON_ZOMBIES = 25;
+    public static final int DEFAULT_SPAWN_ELITE_ZOMBIES = 5;
+    public static final int DEFAULT_SPAWN_WEAPONS = 10;
+    public static final int DEFAULT_SPAWN_ARMORS = 6;
+    public static final int DEFAULT_SPAWN_MEDKITS = 8;
 }
