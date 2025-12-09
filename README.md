@@ -1,3 +1,4 @@
-# Git Demo
-
-Test Repository to Help Teach basic Github functionality of branches, commits, Push/Merge functionalities, and GitHubCI testing with Maven.
+App controls running the simulation
+MainFrame controls what's being run by App
+GridPanel contains the simulator/grid logic
+randomMovement is an example state for reference
