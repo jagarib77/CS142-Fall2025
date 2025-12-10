@@ -40,9 +40,10 @@ public class ZombieInvasionModel {
         //For loop to add exact number of medics and zombies
         for (int i = 0; i < numOfZombies; i++) { types.add(new Zombie()); }
         for (int j = 0; j < numOfMedics; j++) { types.add(new Medic()); }
-
+        if (humanitySaved) { types.add(new ChosenOne()); }
         //Remaining cells are humans
-        int remainingNumOfHumans = (row * column) - (numOfZombies + numOfMedics);
+        int totalEntities = types.size();
+        int remainingNumOfHumans = (row * column) - totalEntities;
         for (int k = 0; k < remainingNumOfHumans; k++) { types.add(new Human()); }
 
         //Use collection interface to shuffle grid randomly
@@ -62,28 +63,48 @@ public class ZombieInvasionModel {
     // BECAUSE OF ORDER OF METHOD CALLS INFECT TAKES PRIORITY
     // I.E zombie will change grid first before humans
     public void updateTick() {
-        infect();
-        heal();
+        // Optional snapshot for reference
+        Entity[][] snapshot = new Entity[row][column];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                snapshot[i][j] = grid[i][j];
+            }
+        }
+
+        // Let entities act
+        infect(snapshot);  // read from snapshot, modify grid
+        heal(snapshot);    // read from snapshot, modify grid
+        immune(snapshot);
     }
     //Checks if square is zombie and able to infect
     //calls on performAction method polymorphism
-    private void infect(){
-        for (int i = 0; i < row; i++){
+    private void infect(Entity[][] snapshot) {
+        for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                Entity entity = grid[i][j];
+                Entity entity = snapshot[i][j];  // read from snapshot
                 if (!entity.isHuman()) {
-                     entity.performAction(grid, infectionRate, i, j);
+                    entity.performAction(grid, infectionRate, i, j); // modify real grid
                 }
             }
         }
     }
     //Check if square is zombie and able to heal
-    private void heal() {
+    private void heal(Entity[][] snapshot) {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                Entity entity = grid[i][j];
-                if (entity instanceof Medic) {    // TODO: need action for humans side
-                    entity.performAction(grid,healRate, i, j);
+                Entity entity = snapshot[i][j]; // read from snapshot
+                if (entity instanceof Medic) {
+                    entity.performAction(grid, healRate, i, j); // modify real grid
+                }
+            }
+        }
+    }
+    private void immune(Entity[][] snapshot) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                Entity entity = snapshot[i][j]; // read from snapshot
+                if (entity.isImmune()) {
+                    entity.performAction(grid, .2, i, j); // modify real grid
                 }
             }
         }

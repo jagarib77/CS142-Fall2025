@@ -4,7 +4,7 @@ public class Medic extends Human {
     @Override       // TODO: finish
     public void performAction(Entity[][] grid, double effectRate, int row, int column){
 
-        double healRate = effectRate / 100.0;
+        //double healRate = effectRate / 100.0;
         for (int[] dir : DIRECTIONS) {
             int newRow = row + dir[0];
             int newColumn = column + dir[1];
@@ -16,14 +16,19 @@ public class Medic extends Human {
             //make sure it's human and NOT immune
             if (!neighbor.isHuman()) {
                 if (Math.random() < effectRate) {
-                    grid[newRow][newColumn] = new Human();  // chance to infect human
+                    grid[newRow][newColumn] = new Human();  // chance to heal zombie
                 }
             }
         }
     }
 
     @Override
-    public Color getColor() { return Color.YELLOW; }
+    public Color getColor() {
+        if (this.isImmune())
+            return Color.CYAN;
+        return Color.YELLOW;
+    }
+
 
     @Override
     public String toString() { return "M"; }

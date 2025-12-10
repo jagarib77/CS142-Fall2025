@@ -5,7 +5,7 @@ public class Zombie extends Entity {
     public void performAction(Entity[][] grid, double effectRate, int row, int column) {
             //DIRECTIONS from entity class; checks sorrounding neighbors
             //Checks first neighbor {-1, 0} -> {row -1, column + 0}...
-            double infectionRate = effectRate / 100.0;
+            //double infectionRate = effectRate / 100.0;
             for (int[] dir : DIRECTIONS) {
                 int newRow = row + dir[0];
                 int newColumn = column + dir[1];

@@ -17,7 +17,16 @@ public abstract class Entity {
 
     // default = false, subclasses override what they are. Only zombie classes need to override
     public boolean isHuman() { return true; }
-
+    // TODO: move to human class
     //only chosen one is immune
-    public boolean isImmune() { return false;}
+
+    protected boolean immune = false; // default: not immune
+
+    public boolean isImmune() {
+        return immune;
+    }
+
+    public void setImmune(boolean immune) {
+        this.immune = immune;
+    }
 }

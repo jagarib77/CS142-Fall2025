@@ -54,7 +54,6 @@ public class ZombieGUI {
         //user input is stored here
         okButton.addActionListener((ActionEvent e) -> {
             Map<String, Object> map = new HashMap<>();
-            // TODO: add validation input here
             try {
                 for (int i = 0; i < names.length; i++) {
                     if (types[i] == Boolean.TYPE) {
@@ -100,14 +99,14 @@ public class ZombieGUI {
         JFrame gridFrame = new JFrame("Zombie Invasion Simulation");
         gridFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         gridFrame.setLayout(new BorderLayout());
-        // NOTE: --------------Model + Day Counter------------------
+        //-------------Model + Day Counter------------------
         final int[] day = {0};
 
         JLabel dayLabel = new JLabel("Day: 0");
         dayLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
 
-        // NOTE: ----------------Grid Panel----------------
+        //----------------Grid Panel----------------
         JPanel gridPanel = new JPanel(new GridLayout(height, width));
         for (int i = 0; i < height * width; i++) {
             JPanel cell = new JPanel();
@@ -131,14 +130,13 @@ public class ZombieGUI {
                 infectionRate / 100.0,   // convert to % if needed
                 healRate / 100.0         // convert to % if needed
         );
-        model.printEntity();
+
         gridFrame.add(gridPanel, BorderLayout.CENTER);
         //updates simulation every 500ms (change if needed)
         Timer timer = new Timer(500, e -> {
             day[0]++;                 // increment day
             dayLabel.setText("Day: " + day[0]);
 
-            // TODO: call your model.updateTick() here when model class is ready. dont forget
             model.updateTick();
             // redraw the grid based on current entity states
             for (int i = 0; i < height; i++) {
@@ -154,7 +152,7 @@ public class ZombieGUI {
             // redrawsw the grid
             gridPanel.repaint();
         });
-        // NOTE: ----------------Legend Panel----------------
+        //---------------Legend Panel----------------
         JPanel legendPanel = new JPanel();
         legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
         legendPanel.setBorder(BorderFactory.createTitledBorder("Legend"));
@@ -162,21 +160,23 @@ public class ZombieGUI {
         legendPanel.add(createLegendItem(Color.RED, "Zombie"));
         legendPanel.add(createLegendItem(Color.GREEN, "Human"));
         legendPanel.add(createLegendItem(Color.YELLOW, "Medic"));
-        // NOTE: need to create another toggle Legend for ChosenOne if buttonSwitch is on
+        if (chosenOne) { legendPanel.add(createLegendItem(Color.BLUE, "Chosen One")); }
+        legendPanel.add(createLegendItem(Color.ORANGE, "Immune"));
+        legendPanel.add(createLegendItem(Color.CYAN, "Super Doctor"));
 
         gridFrame.add(legendPanel, BorderLayout.EAST);
 
-        // NOTE: ----------------Panel Default Settings----------------
+        //---------------Panel Default Settings----------------
         gridFrame.pack();
         gridFrame.setSize(Math.min(width * 40 + 150, 1000), Math.min(height * 40 + 50, 800));
         gridFrame.setLocationRelativeTo(null);
         gridFrame.setVisible(true);
-        // NOTE: ----------------Control Panel----------------
+        //----------------Control Panel----------------
         JButton startButton = new JButton("Start");
         JButton pauseButton = new JButton("Pause");
         JButton quitButton = new JButton("Quit");
 
-        // NOTE: ---------------ACTION LISTENERS(buttons)-------------
+        //--------------ACTION LISTENERS(buttons)-------------
         startButton.addActionListener(e -> timer.start());
         pauseButton.addActionListener(e -> timer.stop());
         quitButton.addActionListener(e -> gridFrame.dispose());
@@ -216,11 +216,6 @@ public class ZombieGUI {
             Map<String, Object> settings = showSettingsDialog(null, "Simulation Settings",
                     names, types, defaults);
 
-            if (settings != null) {
-                settings.forEach((k, v) -> System.out.println(k + " = " + v));
-            } else {
-                System.out.println("Settings canceled.");
-            }
         });
     }
 }
