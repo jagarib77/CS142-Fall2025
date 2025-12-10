@@ -1,7 +1,7 @@
 import java.awt.*;
 
 public class Medic extends Human {
-    @Override       // TODO: finish
+    @Override       
     public void performAction(Entity[][] grid, double effectRate, int row, int column){
 
         //double healRate = effectRate / 100.0;

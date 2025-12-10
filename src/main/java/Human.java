@@ -1,8 +1,6 @@
 import java.awt.*;
 
 public class Human extends Entity {
-    // TODO: not sure what human action is
-    private boolean immune = false;
 
     @Override
     public void performAction(Entity[][] grid, double effectRate, int row, int column){
@@ -28,8 +26,4 @@ public class Human extends Entity {
     }
     @Override
     public String toString() { return "H"; }
-
-    public boolean isImmune() { return immune;}
-
-    public void setImmune(boolean immune) { this.immune = immune;}
 }
