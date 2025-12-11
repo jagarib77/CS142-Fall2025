@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
         switch (type){
             case DEFAULT -> sim.setDiseaseProfile(PlagueIncSimulator.PROFILE_MILD_FLU);
             case BLACK_PLAGUE -> sim.setDiseaseProfile(PlagueIncSimulator.PROFILE_DEADLY_VIRUS);
-            case EBOLA -> sim.setDiseaseProfile(PlagueIncSimulator.PROFILE_RAPID_SPREAD);
+            case EBOLA -> sim.setDiseaseProfile(PlagueIncSimulator.PROFILE_ZOMBIE_PLAGUE);
             case CustomVirus -> sim.setCustomDisease("Custom Virus", IR, DR, .8,5,20);
         }
 

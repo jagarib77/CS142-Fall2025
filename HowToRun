@@ -1,0 +1,116 @@
+Plague Inc Simulation – How to Run
+
+    Project name: Plague Inc–Style Disease Simulation
+    Authors: Landon Carothers and Lukas McAteer
+    Environment tested with:
+        Java SE 24
+        NetBeans IDE 25
+        Windows 11
+
+    The project uses standard Java and Swing; there are no external libraries or data files required.
+
+1. Files and Entry Point
+    
+    The project source lives under:
+        src/main/java/jwp/
+
+    Key files for running the simulation:
+        App.java – Contains the main method and is the entry point of the program.
+        MainFrame.java – Creates the main Swing window and attaches the simulation to the grid.
+        GridPanel.java – Custom JPanel that draws the grid of cells and drives the periodic timer.
+        PlagueIncSimulator.java – “Brain” of the simulation: movement, infection spread, recovery/death, cure progress.
+        PlagueIncAgent.java and its subclasses:
+            - HostAgent.java
+            - HealthyHost.java
+            - InfectedHost.java
+            - RecoveredHost.java
+            - VaccinatedHost.java
+            - DeadHost.java
+        You do not need to compile or run any of the host classes directly; they are used internally by
+        PlagueIncSimulator.
+
+2. Running the Project in an IDE (any Java IDE)
+    You can run this project in any standard Java IDE (NetBeans, IntelliJ IDEA, Eclipse, etc.). The general steps are:
+    
+    1. Open / import the project
+        - In your IDE, choose Open Project, Import Project, or similar.
+        - Point it at the folder that contains the src directory and project metadata (for example, the folder 
+          that also contains any nbproject or project configuration files).
+
+    2. Make sure the JDK for the project is set
+        - Configure the project to use a Java JDK (Java 17+ or Java 24, depending on the environment
+          available in your lab).
+        - Most IDEs let you do this through a Project SDK or Project Platform setting.
+
+    3. Set the main class
+        - In your IDE’s run configuration, set the main class to:
+          jwp.App
+        - This is the class that contains the public static void main(String[] args) method.
+
+    4. Build and run
+        - Use your IDE’s Run or Play button to build and launch the project.
+        - The IDE will compile all the .java files and then run jwp.App.
+
+    5. What you should see
+        - A window titled "Plague" opens.
+        - The window displays a square grid of colored cells:
+            - Green “H” – Healthy hosts
+            - Red “I” – Infected hosts
+            - Blue “R” – Recovered hosts
+            - Yellow “V” – Vaccinated hosts
+            - Dark gray “X” – Dead hosts
+            - Light gray – Empty cells with no host
+        - The grid updates automatically on a timer; no keyboard/mouse interaction is required to see the simulation progress.
+
+    6. Exiting the program
+        - Close the window using the standard window close button (X in the corner).
+        - The application will terminate cleanly.
+
+3. Running from the Command Line (Optional)
+    If you prefer to run it without an IDE:
+
+    1. Open a terminal/command prompt in the project root (the folder that contains src).
+    2. Compile:
+        javac -d out src/jwp/*.java
+    3. Run:
+        java -cp out jwp.App
+    
+    The same "Plague" window will appear.
+
+4. Simulation Behavior (What the GUI is Showing)
+    - On startup, the simulator fills about 40% of the grid with hosts:
+        - Most start Healthy.
+        - Around 2% of the population starts Infected.
+        - Around 10% starts Vaccinated.
+    - Each tick:
+        - Movement: Living hosts randomly attempt to move one cell (up/down/left/right) if the target cell is free.
+        - Infection spread:
+            - Infected hosts are the primary spreaders.
+            - Recovered hosts can still spread the disease but at a weaker rate.
+            - Infection only spreads to the four direct neighbors (no diagonals).
+        - Vaccinated hosts:
+            - Much harder to infect than Healthy hosts, but not completely immune.
+        - Infection progression:
+            - Infected hosts track an “infection age”. After a minimum duration, they have a chance each tick to either:
+                - Recover (become blue “R”), or
+                - Die (become dark gray “X”),
+                  based on the current disease’s lethality.
+        - Cure progress:
+            - The simulation tracks a global “cure progress” value from 0.0 to 1.0.
+            - Cure progress increases faster when:
+                - The disease is more detectable, and
+                - More hosts are infected or dead.
+            - As cure progress increases, the effective infection probability is reduced, making it harder for the disease to continue spreading.
+    - The simulation ends logically (internally) when:
+        - Humanity wins – There are no infected hosts left, and at least one host is still alive (healthy, vaccinated, or recovered).
+        - Plague wins – There are no infected hosts left, and all remaining hosts are dead.
+    - When a terminal state is reached, a short message is printed to the console, but the GUI remains open so you can still see the final board.
+
+5. Error Handling and Console Output
+    - Under normal usage (just running and watching the GUI), the program should not throw exceptions.
+    - We do not print debug spam to the console during normal operation.
+    - The only console output used is:
+        - Occasional end-of-simulation messages like:
+            - "Plague eradicated! Some hosts survived."
+            - "Everyone died. The plague has wiped out all hosts."
+    - Closing the window is the normal way to exit the program.
