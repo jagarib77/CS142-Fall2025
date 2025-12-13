@@ -1,5 +1,5 @@
 /*
-Jake
+Created by Jake
 */
 
 import javax.swing.*;
@@ -11,6 +11,7 @@ public class SimulationGUI extends JFrame {
     private final Simulation simulation;
     private final GridPanel gridPanel;
 
+    // Initializes the SimulationGUI by adding the grid and buttons to the frame
     public SimulationGUI(Simulation sim) {
         this.simulation = sim;
         setTitle("Boid Bunch Simulation");
@@ -80,13 +81,15 @@ public class SimulationGUI extends JFrame {
         setSize(800, 800);
         setVisible(true);
     }
-    
+
+    // Creates a button with the given text and action listener
     private JButton createButton(String text, ActionListener listener) {
         JButton button = new JButton(text);
         button.addActionListener(listener);
         return button;
     }
-    
+
+    // Creates a hold button with the given text and action
     private JButton createHoldButton(String text, Runnable action) {
         JButton button = new JButton(text);
         Timer holdTimer = new Timer(100, e -> action.run());
@@ -111,18 +114,21 @@ public class SimulationGUI extends JFrame {
         
         return button;
     }
-    
+
+    // Paints a pixel on the grid
     public void paintGridPixel(int x, int y, int width, int height, Color color, Graphics2D g2) {
         g2.setColor(color);
         int gridSize = gridPanel.getGridSize();
         g2.fillRect(x * gridSize, y * gridSize, width * gridSize, height * gridSize);
     }
 
+    // The class representing the grid panel which all objects are drawn on
     private static class GridPanel extends JPanel {
         private Simulation simulation;
         private SimulationGUI simGUI;
         private final int GRID_SIZE;
-        
+
+        // Initialization of the grid panel based on the simulation, gui, and grid size
         public GridPanel(Simulation sim, SimulationGUI simGUI, int gridSize) {
             this.simulation = sim;
             this.simGUI = simGUI;
@@ -130,6 +136,8 @@ public class SimulationGUI extends JFrame {
             setBackground(Color.WHITE);
             setPreferredSize(new Dimension(simulation.getCols() * GRID_SIZE, simulation.getRows() * GRID_SIZE));
         }
+
+        // Paints a component on the grid panel
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
@@ -146,7 +154,8 @@ public class SimulationGUI extends JFrame {
                 obj.draw(simGUI, g2);
             }
         }
-        
+
+        // Gets the size of the grid
         public int getGridSize() {
             return GRID_SIZE;
         }

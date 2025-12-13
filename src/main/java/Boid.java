@@ -1,5 +1,7 @@
 import java.awt.Color;
-
+// Created by Apollo
+// The Boid class is a class that represents a single boid in the simulation
+// It runs the "boids" algorithm in tandem with multiple other boids
 class Boid extends SimulationObject{
     private Vector2D velocity;
     private final double edgeMargin = 5.0;
@@ -7,6 +9,7 @@ class Boid extends SimulationObject{
     private int gridRows;
     private int gridCols;
 
+    // Initializes the boid and puts it on a random grid space
     public Boid(Vector2D position, int gridRows, int gridCols) {
         super(position);
         this.gridRows = gridRows;
@@ -14,6 +17,7 @@ class Boid extends SimulationObject{
         this.velocity = new Vector2D(Math.random() * 2 - 1, Math.random() * 2 - 1).normalized().times(0.5);
     }
 
+    // Updates the current boid based on boid and obstacle locations
     public void update(Boid[] boids, Obstacle[] obstacles, double speedMultiplier) {
         Vector2D acceleration = new Vector2D();
 
@@ -81,12 +85,16 @@ class Boid extends SimulationObject{
         position = position.plus(velocity.times(speedMultiplier));
     }
 
+    // Gets the range that the boid can see other boids
     public double getVisibleRange(){
         return 15.0;
     }
+    // Gets the range that the boid can protect itself from
     public double getProtectedRange(){
         return 3.0;
     }
+
+    // These get the factor of separation, alignment, and attraction
     public double getSeparationFactor(){
         return 0.1;
     }
@@ -97,6 +105,7 @@ class Boid extends SimulationObject{
         return 0.01;
     }
 
+    // These get the minimum and maximum speeds for the boid
     public double getMinimumSpeed(){
         return 0.1;
     }
@@ -104,15 +113,18 @@ class Boid extends SimulationObject{
         return 0.5;
     }
 
+    // Returns the position of the boid
     @Override
     public Vector2D getPosition() {
         return this.position;
     }
 
+    // Returns the velocity of the boid
     public Vector2D getVelocity(){
         return this.velocity;
     }
-    
+
+    // Returns the color of the boid
     @Override
     public Color getColor() {
         return new Color(0, 150, 150);

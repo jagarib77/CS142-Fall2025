@@ -1,0 +1,12 @@
+To run this program, open Main.java, and run it.
+A GUI will open. You can add Boids or Obstacles to the simulation and it will start to run.
+
+The following are the Simulation Objects that you can add:
+- Boids (Which Follow the Boids movement algorithm)
+- Super Boids (Same as Boids, but faster and more "attractive")
+- Sad Boids (Same as Boids, but rather than trying to group, they run away from other Boids at a slow pace)
+- Trees (An obstacle that the Boids will avoid, stationary, destroys Boids on impact)
+- Cars (Obstacles that move back and forth in straight lines, Boids will also avoid these, destroys Boids on impact)
+- Windows (Obstacles that are stationary, Boids will *not* avoid these, because they can't see them, destroys Boids on impact)
+
+You may also adjust the speed of the simulation at the bottom of the GUI, and can pause at any time.
