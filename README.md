@@ -15,4 +15,4 @@ Next step is to create a launch.json file and run the program(Ctrl + F5).
 To create a launch.json file, go to Run and Debug, and click the link which promts you to make one.
 An example of launch.json is avaiable in the src folder.
 Your launch.json file should match ours(the on the src folder).
-The only cang you need to make is replace the path to the javafx libirary with yours(wherever your javafx/lib folder is located) in "vmArgs" section.
+The only change you need to make is replace the path to the javafx libirary with yours(wherever your javafx/lib folder is located) in "vmArgs" section.
