@@ -1,7 +1,7 @@
 Created by Ayush Adhikari, James Darien Widyadi, and Michael William Wijaya
 
 
-To run the simulation, download all the files in src folder. You will need javafx to run the files.
+To run the simulation, download all the files in src folder. You will need javafx to run the simulation.
 Javafx is free and open source, and it can be dowload through their website: https://gluonhq.com/products/javafx/
 
 VS CODE:
