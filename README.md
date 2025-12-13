@@ -1,3 +1,1 @@
-# Git Demo
-
-Test Repository to Help Teach basic Github functionality of branches, commits, Push/Merge functionalities, and GitHubCI testing with Maven.
+Created by Ayush Adhikari, James Darien Widyadi, and Michael William Wijaya
