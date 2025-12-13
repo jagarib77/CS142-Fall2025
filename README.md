@@ -7,5 +7,10 @@ Javafx is free and open source, and it can be dowload through their website: htt
 VS CODE:
 To run it VS code, you need dowload javafx(our code was created with javafx-sdk-23.0.2 but other version should work).
 Add all the .jar files to your refrence libraries.
-Create a launch.jason file and run the program(Ctrl + F5).
-An example of launch.jason is avaiable in the src folder.
+Refrence libraries section can be found under "Java Projects" inside vs code right under all your files.
+After navigating to refrence libraries, all you have to do is click the "+" icon, look for your javafx/lib folder
+in file explorer and select all the .jar files. This will successfully add all the files to your refrence library.
+
+Next step is to create a launch.jason file and run the program(Ctrl + F5).
+An example of launch.json is avaiable in the src folder.
+All you need to replace the path to the javafx libirary with yours in "vmArgs" section.
