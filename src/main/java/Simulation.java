@@ -19,7 +19,6 @@ public class Simulation {
         this.cols = cols;
         this.grid = new SimulationObject[rows][cols];
         this.objects = new ArrayList<>();
-        initializeGrid();
     }
 
     // These get the number of rows and columns in the grid
@@ -28,21 +27,6 @@ public class Simulation {
     }
     public int getRows() {
         return rows;
-    }
-
-    // Adds a few items to the grid as a starting point
-    private void initializeGrid() {
-        Boid b = new Boid(new Vector2D(1, 1), this.rows, this.cols);
-        Tree t = new Tree(new Vector2D(1, 1), 5);
-        Car c = new Car(new Vector2D(3, 2), 2);
-
-        addObject(b);
-        addObject(t);
-        addObject(c);
-
-        grid[1][1] = b;
-        grid[2][3] = t;
-        grid[0][4] = c;
     }
 
     // Adds an object to the simulation
